@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%=title%></title>
+    <link href="/global/stylesheets/normalize.css" rel='stylesheet' type='text/css'/>
+    <link href="/global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="/global/stylesheets/globalStyle.css"/>
+    <script src="/global/javascripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/patient/javascripts/register_formoid-flat-green.js"></script>
+    <script src="/patient/javascripts/area.js"></script>
+</head>
+<body>
+<div class="container reg_top">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/p_reg" class="list-group-item active">我要就诊</a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <!--form表单,使用了post方法-->
+            <form id="patient_reg" class="form-horizontal" method="post">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">账户信息</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-md-2 col-xs-12 control-label" for="nickname">注册名</label>
+                            <div class="col-sm-8 col-md-6">
+                                <input id="nickname" class="form-control" type="text" placeholder="请填写注册名称"
+                                       name="nickname" required="required">
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-1 btn-lg" id="name-right" style="display: none">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </div>
+                            <div class="col-sm-9 col-md-4 tickling" id="name-null" style="display: none;">
+                                <div class="alert alert-danger">
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                    注册名不能为空，请填写注册名。
+                                </div>
+                            </div>
+                            <div class="col-sm-9 col-md-4 tickling" id="name-used" style="display: none;">
+                                <div class="alert alert-danger">
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                    该账号已被使用，请重新更换。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-md-2 control-label" for="password">登录密码</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="password" class="form-control" type="password" placeholder="请填写登录密码"
+                                       name="password" required="required"
+                                       onkeyup="this.value=this.value.replace(/[^\w]/g,'')"
+                                       onpaste="this.value=this.value.replace(/[^\w]/g,'')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-md-2 control-label" for="password-repeat">确认密码</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="password-repeat" class="form-control" type="password"
+                                       placeholder="请填写登录密码"
+                                       name="password-repeat" required="required"
+                                       onkeyup="this.value=this.value.replace(/[^\w]/g,'')"
+                                       onpaste="this.value=this.value.replace(/[^\w]/g,'')"
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-1 btn-lg" id="password-right" style="display: none">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </div>
+                            <div class="col-sm-9 col-md-4 tickling" id="password-repeat-check" style="display: none;">
+                                <div class="alert alert-danger">
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                    两次输入的密码不一致。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 ">
+                    <div class="col-md-12 col-sm-10 ">
+                        <button type="submit" class="btn btn-info pull-right submit_btn">提交注册</button>
+                        <a type="button" class="btn btn-success pull-right" href="/login">已有帐号，去登陆</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

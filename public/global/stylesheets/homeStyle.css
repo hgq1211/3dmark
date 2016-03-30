@@ -1,0 +1,219 @@
+body {
+    background: #ebebeb;
+    font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    color: #222;
+    font-size: 14px;
+}
+
+/*上部--蓝色部分*/
+.header {
+    background: #008ead;
+    width: 100%;
+    height: 250px;
+    text-align: center;
+}
+
+/*表单区域*/
+#login.form {
+    margin: -100px auto auto;
+    /*border: 1px solid rgb(231, 231, 231);*/
+    border-image: none;
+    /*text-align: center;*/
+    /*max-width: 360px;*/
+    padding: 99px 20px 10px 20px;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+#login .form-control {
+    height: 42px;
+}
+
+#login .control-label {
+    height: 42px;
+    line-height: 42px;
+}
+
+.username {
+    margin-top: 20px;
+}
+
+.controls a {
+    text-decoration: none;
+}
+
+.cartoon {
+    width: 100%;
+    position: absolute;
+}
+
+/*头部初始位置*/
+.tou {
+    background: url("/global/images/tou.png") no-repeat;
+    width: 97px;
+    height: 92px;
+    position: absolute;
+    top: -85px;
+}
+
+/*---左手 开始---*/
+/*左手初始位置*/
+.initial_left_hand {
+    background: url("/global/images/hand.png") no-repeat;
+    width: 30px;
+    height: 20px;
+    position: absolute;
+    top: -12px;
+}
+
+/*密码输入框获得焦点时 捂住眼睛的左手*/
+.left_hand {
+    background: url("/global/images/left_hand.png") no-repeat;
+    width: 32px;
+    height: 37px;
+    position: absolute;
+    top: -12px;
+    /*left: 150px;*/
+}
+
+/*---右手---*/
+/*右手初始位置*/
+.initial_right_hand {
+    background: url("/global/images/hand.png") no-repeat;
+    width: 30px;
+    height: 20px;
+    position: absolute;
+    top: -12px;
+}
+
+/*密码输入框获得焦点时 捂住眼睛的右手*/
+.right_hand {
+    background: url("/global/images/right_hand.png") no-repeat;
+    width: 32px;
+    height: 37px;
+    position: absolute;
+    top: -36px;
+    right: -64px;
+}
+
+/*单选框样式*/
+div.controls {
+    position: relative;
+}
+
+input[type='radio'] {
+    display: none;
+    cursor: pointer;
+}
+
+input[type='radio']:focus, input[type='radio']:active {
+    outline: none;
+}
+
+input[type='radio'] + label {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 10px;
+    color: #0b4c6a;
+}
+
+input[type='radio'] + label:before, input[type='radio'] + label:after {
+    content: '';
+    font-family: helvetica;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    position: absolute;
+}
+
+input[type='radio'] + label:before {
+    background-color: #fafafa;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type='radio'] + label:after {
+    color: #fff;
+}
+
+input[type='radio']:checked + label:before {
+    -moz-box-shadow: inset 0 0 0 10px #158EC6;
+    -webkit-box-shadow: inset 0 0 0 10px #158EC6;
+    box-shadow: inset 0 0 0 10px #158EC6;
+}
+
+/*特殊样式*/
+input[type='radio'] + label:before {
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+input[type='radio'] + label:hover:after, input[type='radio']:checked + label:after {
+    content: '\2022';
+    position: absolute;
+    top: 0px;
+    font-size: 20px;
+    line-height: 15px;
+}
+
+input[type='radio'] + label:hover:after {
+    color: #c7c7c7;
+}
+
+input[type='radio']:checked + label:after, input[type='radio']:checked + label:hover:after {
+    color: #fff;
+}
+
+/*验证码*/
+#checkCode {
+    line-height: 27px;
+
+}
+
+.form-item {
+    margin-bottom: 0px;
+}
+
+.checkCode {
+    margin-left: -17px;
+}
+.check{
+    line-height: 23px;
+    margin-left: -55px;
+}
+#right{
+    color: rgb(60, 118, 61)
+}
+#wrong{
+    color: rgb(169, 68, 66);
+}
+
+/*提示框*/
+.MyAlert {
+    margin-bottom: 0px;
+}
+
+/*登录按钮*/
+.login button {
+    padding: 6px 32px;
+}
+
+.login a, .login a:hover {
+    text-decoration: none;
+    line-height: 34px;
+}
+

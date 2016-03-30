@@ -1,0 +1,709 @@
+/*p_reg page*/
+body {
+    font-family: 'Microsoft YaHei', 'Helvetica', 'Arial', 'SimHei', sans-serif;
+    overflow: scroll;
+    font-size: 14px;
+    line-height: 1.7em;
+}
+#patient_reg .tickling{
+    margin-bottom: 0px;
+}
+
+.reg_top {
+    padding-top: 25px;
+    padding-bottom: 50px;
+}
+
+.hospital_information {
+    margin-top: 5px;
+}
+
+.submit_btn {
+    margin-left: 20px;
+}
+#patient_reg .alert{
+    padding: 4px 15px;
+    margin-bottom: 0px;
+}
+#name-right,#password-right{
+    right: 60px;
+    top: 0px;
+    color: rgb(60, 118, 61);
+}
+#name-right.btn-lg,#password-right.btn-lg{
+    padding: 5px 16px;
+}
+
+/*复选框*/
+.checkbox, .radio {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 0px;
+    /*margin-right: 20px;*/
+}
+
+.checkbox ins, .radio ins {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 23px;
+    height: 22px;
+    vertical-align: middle;
+    background: url("/patient/images/blue.png") no-repeat;
+    margin-right: 8px;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    -ms-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+    vertical-align: middle;
+}
+
+.checkbox ins {
+    background-position: 0px 0px;
+    margin-right: 3px;
+}
+
+.radio ins {
+    background-position: -120px 0px;
+}
+
+.checkbox .hover {
+    background-position: -24px 0px;
+}
+
+.checkbox .checked {
+    background-position: -48px 0px;
+}
+
+.checkbox span, .radio span {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+}
+
+/*
+p_index page global
+*/
+
+/*alert提示框
+<div class="tickling col-md-4 col-sm-6 col-xs-10">
+                <% if (locals.success&&locals.success.length) { %>
+                <div class="alert alert-success fade in" role="alert">
+                    <%= locals.success %>
+                </div>
+                <% } %>
+                <% if (locals.error&&locals.error.length) { %>
+                <div class="alert alert-danger fade in" role="alert">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    <%= locals.error %>
+                </div>
+                <% } %>
+            </div>
+
+*/
+
+.tickling .alert {
+    -webkit-animation: slide-from-top 1000ms cubic-bezier(0.2, 0.7, 0.5, 1);
+    animation: slide-from-top 1000ms cubic-bezier(0.2, 0.7, 0.5, 1);
+}
+
+@-webkit-keyframes slide-from-top {
+    0% {
+        -webkit-transform: translateY(-30%);
+        transform: translateY(-30%);
+        opacity: 0;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-from-top {
+    0% {
+        -webkit-transform: translateY(-30%);
+        transform: translateY(-30%);
+        opacity: 0;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+/*导航栏*/
+.navbar-top {
+    border: none;
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.25);
+}
+
+/*患者名字*/
+.navbar-top .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #40D2B1;
+    height: 70px;
+    padding: 25px 15px;
+}
+
+/*导航文字*/
+.navbar-top .navbar-nav > li > a {
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    line-height: 35px;
+}
+
+.navbar-collapsed {
+    margin-top: 17px;
+}
+
+.nav-dsgn > li > a {
+    color: #303e4b !important;
+}
+
+.navbar-top .navbar-collapsed:hover {
+    border-color: #40D2B1;
+    background-color: rgb(69, 210, 184);
+}
+
+.navbar-top .navbar-collapsed .icon-bar {
+    background-color: #1C9982;
+}
+
+/*body margin*/
+#main {
+    min-height: 800px;
+    margin-top: 95px;
+}
+
+/*返回顶部*/
+#toTop {
+    display: none;
+    text-decoration: none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    border: none;
+    text-indent: 100%;
+    background: url("/global/images/backtop.png") no-repeat 0px 0px;
+    z-index: 99999;
+}
+
+#toTop:hover {
+    background: url("/global/images/backtop.png") no-repeat 0px -52px;
+}
+
+/*footer */
+/* footer */
+footer {
+    min-height: 50px;
+    line-height: 50px;
+    margin-top: 80px;
+    background: #3f4850;
+    color: #aaa;
+    text-align: center;
+
+    -webkit-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+footer a:link {
+    color: #aaa
+}
+
+/* 未访问的链接 */
+footer a:visited {
+    color: #888
+}
+
+/* 已访问的链接 */
+footer a:hover {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* 鼠标移动到链接上 */
+footer a:active {
+    color: #bbb
+}
+
+/* 选定的链接 */
+footer .point {
+    margin: 0 8px;
+}
+
+/**
+ * Icons
+ */
+.icon svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+/*
+p_index page body
+*/
+
+.patient-panel-body {
+    padding: 7px;
+}
+
+.reservation_result {
+    padding: 8px;
+}
+
+.alert-info {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.top_text > h5 {
+    margin-top: 5px;
+}
+
+.pager {
+    text-align: center;
+}
+
+.ctrl_btn {
+    margin-top: 5px;
+}
+
+
+/*
+p_details page
+*/
+/*svg图像区域*/
+.svg_content {
+    padding: 12px;
+}
+
+/*
+p_medical_info page
+*/
+.medical_form-item label {
+    line-height: 34px;
+
+}
+
+.medical_form-item a {
+    text-decoration: none;
+}
+
+/*
+p_photos page
+*/
+/*图片区域*/
+.item img {
+    width: 100%;
+    height: auto;
+}
+
+.item p {
+    text-align: center;
+    margin-top: 5px;
+}
+.item.well:hover{
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+/*分页*/
+.page {
+    text-align: center;
+}
+
+/*
+p_upload page
+*/
+.col-md-12.no-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.info {
+    position: relative;
+    height: 100%;
+}
+
+tr .progress {
+    width: 96%;
+    display: inline-block;
+}
+
+tr .progress-bar {
+    min-height: 20px;
+    float: none;
+}
+
+tr .progress, tr .progress div {
+    height: 20px;
+}
+
+tr .progress .chunk-status {
+    position: absolute;
+    left: 24px;
+    top: 0;
+}
+
+tr .progressCancel {
+    display: inline-block;
+    float: right;
+    position: relative;
+    z-index: 100;
+    color: #333;
+    text-decoration: none;
+}
+
+.status {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 24px;
+}
+
+.tip {
+    padding-left: 30px;
+}
+
+.tip p {
+    line-height: 1;
+}
+
+#container {
+    margin-bottom: 20px;
+    border-width: 2px;
+    border-radius: 3px;
+    border-color: #dcdcdc;
+    cursor: default;
+}
+
+#container:hover, #container:active {
+    background-color: #fff;
+    border-color: #dcdcdc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#container.draging {
+    background-color: #fff;
+    border-color: #999999;
+}
+
+#success {
+    line-height: 30px;
+    height: 30px;
+    margin: 20px 0 0 0;
+}
+
+#success div {
+    padding-left: 24px;
+}
+
+#container a {
+    width: 15%;
+    min-width: 145px;
+
+}
+
+td .Wrapper {
+    margin-top: 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+td .Wrapper .infoWrapper {
+    width: 50%;
+    height: 100px;
+    margin-left: 10px;
+    text-align: left;
+    line-height: 25px;
+}
+
+td .Wrapper .infoWrapper a:first-child {
+    margin-right: 10px;
+}
+
+td .Wrapper.default {
+    margin-top: 20px;
+    text-align: left;
+}
+
+td .Wrapper.default img {
+    width: 100px;
+    height: 100px;
+}
+
+td .imgWrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+td .imgWrapper .linkWrapper {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+td .imgWrapper .linkWrapper a {
+    line-height: 50px;
+
+}
+
+table td .hash {
+    margin-bottom: 20px;
+}
+
+pre {
+    margin-top: 20px;
+}
+
+.container .modal-dialog {
+    width: 45%;
+}
+
+.container .modal-dialog .modal-content {
+    max-height: 90%;
+}
+
+.container .modal-dialog .modal-body img {
+    max-width: 95%;
+    max-height: 70%;
+}
+
+.container .modal-body-footer, .container .modal-body-footer div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.container .modal-dialog .modal-body-footer {
+    margin-top: 0px;
+}
+
+.container .modal-dialog .modal-body-footer span {
+    margin-right: 20px;
+}
+
+.container .modal-dialog .modal-body-footer .text-warning, .container .modal-dialog .modal-footer span, .container .modal-dialog .modal-footer a {
+    font-size: 12px;
+}
+
+#pickfiles {
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(243, 243, 243, 0.75);
+    box-shadow: 0 1px 0 rgba(243, 243, 243, 0.75);
+    color: #646464;
+    border: 1px solid #d2d2d2;
+    text-align: center;
+    -webkit-transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+    transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+    -webkit-user-select: none;
+    outline: none;
+}
+
+#pickfiles:hover, #pickfiles:active, #pickfiles:focus, .no-padding button:hover, .no-padding button:active, .no-padding button:focus {
+    border-color: #bebebe;
+    text-decoration: none;
+    background-color: #fff;
+    color: #262626;
+    outline: none;
+    -webkit-box-shadow: 0 1px 0 rgba(230, 230, 230, 0.8);
+    box-shadow: 0 1px 0 rgba(230, 230, 230, 0.8);
+}
+
+a {
+    cursor: pointer;
+
+}
+
+/*
+p_information page
+*/
+.information_table {
+    margin-bottom: 0px;
+}
+/*edit self information*/
+.p-edit{
+    font-size: 16px;
+    margin-top: 2px;
+}
+.p-edit:hover{
+    color: #1d9d74;
+    font-size: 20px;
+}
+.changeInfo .col-md-3{
+    padding-left: 0px;
+}
+
+/*
+p_order page
+*/
+/*医生列表*/
+.table a {
+    text-decoration: none;
+}
+
+.page {
+    text-align: center;
+}
+
+/*医生简介*/
+.heading h2 {
+    margin: 0px;
+}
+
+/*
+p_order page
+*/
+/*图片区域*/
+#rightdiv {
+    /*padding-top: 5px;*/
+    padding: 4px;
+}
+
+.gridalicious {
+    margin: 0px;
+}
+
+.item {
+    padding: 10px;
+    margin: 10px;
+}
+/*
+p_order_info page
+*/
+#rightdiv td{
+    width: 25%;
+}
+
+
+/*
+d_index page
+*/
+#accordion .choice-btn{
+    margin: 0px 2px;
+}
+
+
+/*
+ d_gather page
+ */
+/*预约患者资料、图片、标签记录汇总 部分css*/
+/*.gather—panel .panel-body {*/
+    /*padding: 2px;*/
+/*}*/
+
+.gather—panel .panel-heading, .leftTable th, .leftTable td {
+    text-align: center;
+}
+
+.photos {
+    height: 410px;
+    border: 10px solid rgb(231, 231, 231);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.alert h4,#left h4{
+    text-align: center;
+}
+
+/*底部诊断方案*/
+.content-bottom{
+    margin-top: 10px;
+}
+.treatment{
+    background-color: rgb(223, 240, 216);
+    border-color: rgb(214, 233, 198);
+}
+
+/*
+d_photoview page
+*/
+.left-top, .left-top th, .left-bottom, .left-bottom th {
+    text-align: center;
+}
+
+
+.diagnosis {
+    margin: 0px;
+    padding: 10px;
+}
+
+.gallery-item {
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+#pagination{
+    margin: 7px 0px -6px 0px;
+}
+
+/*
+d_mark page
+*/
+.svg_content{
+    padding: 12px;
+}
+.svg_button{
+    padding-top: 10px;
+    text-align: center;
+}
+.btn-ctrl{
+    display: inline-block;
+}
+#labeltable>tr>td:nth-child(odd){
+    width: 15%;
+}
+
+.mark-btn.btn-warning:hover,.mark-btn.btn-warning:focus{
+    background-color: rgb(240, 173, 78);
+    border-color: rgb(238, 162, 54);
+}
+.mark-btn.btn-info:hover,.mark-btn.btn-info:focus{
+    background-color: rgb(91, 192, 222);
+    border-color: rgb(70, 184, 218);
+}
+.p-information{
+    color: rgb(60, 118, 61);
+    background-color: rgb(223, 240, 216);
+    border-color: rgb(214, 233, 198);
+}
+/*预约人信息*/
+.panel-zan > .panel-heading {
+    color: rgb(255, 255, 255);
+    background-color: rgb(61, 68, 80);
+    border-color: rgb(8, 8, 8);
+}
+.panel-toggle{
+    margin: 5px 0px 0px 5px;
+    cursor: pointer;
+    font-size: 16px;
+}

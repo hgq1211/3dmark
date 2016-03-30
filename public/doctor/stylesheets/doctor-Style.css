@@ -1,0 +1,146 @@
+/*
+global style
+*/
+
+/*navbar  style*/
+.navbar-top {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.25);
+}
+
+.navbar-top .navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+    color: #40D2B1;
+    height: 55px;
+    padding: 20px 10px;
+}
+
+.navbar-top .navbar-nav > li > a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+    height: 55px;
+    line-height: 30px;
+}
+
+.navbar-nav > li {
+    margin-left: 5px;
+    border-radius: 15px;
+}
+
+.navbar-toggle {
+    margin-top: 17px;
+}
+
+.navbar-top .navbar-toggle:hover {
+    border-color: #40D2B1;
+    background-color: rgb(69, 210, 184);
+}
+
+.navbar-top .navbar-toggle .icon-bar {
+    background-color: #1C9982;
+}
+
+.navbar-nav > li:hover, .collapse .active > a {
+    background-color: rgb(249, 249, 89);
+    border-radius: 15px;
+}
+
+/*body margin*/
+#main {
+    min-height: 800px;
+    margin-top: 95px;
+}
+
+/*返回顶部*/
+#toTop {
+    display: none;
+    text-decoration: none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    border: none;
+    text-indent: 100%;
+    background: url("/global/images/backtop.png") no-repeat 0px 0px;
+    z-index: 99999;
+}
+#toTop:hover{
+    background: url("/global/images/backtop.png") no-repeat 0px -52px;
+}
+
+/*footer */
+/* footer */
+footer {
+    min-height: 50px;
+    line-height: 50px;
+    margin-top: 80px;
+    background: #3f4850;
+    color: #aaa;
+    text-align: center;
+
+    -webkit-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+footer a:link {
+    color: #aaa
+}
+
+/* 未访问的链接 */
+footer a:visited {
+    color: #888
+}
+
+/* 已访问的链接 */
+footer a:hover {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* 鼠标移动到链接上 */
+footer a:active {
+    color: #bbb
+}
+
+/* 选定的链接 */
+footer .point {
+    margin: 0 8px;
+}
+
+/**
+ * Icons
+ */
+.icon svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+
+/*
+d_index page*/
+/*分页*/
+.page {
+    text-align: center;
+}
+/*取消和确定两个选择按钮*/
+.choice-btn {
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+.register {
+    padding-right: 0px;
+}
+
+.badge-lg {
+    font-size: 18px;
+}
