@@ -1,12 +1,112 @@
 /**
- * Created by Administrator on 2016/3/20 0020.
+ * Created by hgq on 2016/3/30 0020.
  */
-//arr是个集合，用来存放svg画布上的点的id、cx、cy、text内容的
 
-//单击图片缩略图之后克隆图片到svg
+//单击添加球体标注
+var particleMaterial,container;
+var raycaster;
+var mouse;
+var position=[];
+function addsphere(){
+    var PI2 = Math.PI * 2;
+    particleMaterial = new THREE.SpriteCanvasMaterial( {
+        color: 0x0000ff,
+        program: function ( context ) {
+            context.beginPath();
+            context.arc( 0, 0, 0.5, 0, PI2, true );
+            context.fill();
 
-//单击画圆
-function addcircle(current,position) {
+        }
+    } );
+}
+
+//提交当前标注信息
+function save(mark){
+    var point=JSON.stringify(mark);
+    console.log(point);
+    $.ajax({
+        type: "post",
+        url: "/mark/point",
+        dataType:"json",
+        data: {point:point},
+        success: function (data) {
+            recovery();
+        }
+
+    })
+}
+//将数据库中的标注信息还原出来
+function recovery() {
+    $.ajax({
+        type: "post",
+        url: "/mark/recovery",
+        dataType: "json",
+        data: {image_id: "1"},
+        success: function (data) {
+            $.each(data, function (index, val) {
+                var particle = new THREE.Sprite(particleMaterial);
+                particle.position.copy(JSON.parse(val.point));
+                particle.scale.x = particle.scale.y = 8;
+                scene.add(particle);
+            })
+        }
+    });
+}
+raycaster = new THREE.Raycaster();
+mouse = new THREE.Vector2();
+
+
+
+
+
+document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+window.addEventListener( 'resize', onWindowResize, false );
+
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+function onDocumentTouchStart( event ) {
+
+    event.preventDefault();
+
+    event.clientX = event.touches[0].clientX;
+    event.clientY = event.touches[0].clientY;
+    onDocumentMouseDown( event );
+
+}
+
+function onDocumentMouseDown( event ) {
+    event.preventDefault();
+    mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( objects );
+
+    if ( intersects.length > 0 ) {
+        console.log(intersects[0]);
+        var particle = new THREE.Sprite( particleMaterial );
+        particle.position.copy( intersects[ 0 ].point );
+        particle.scale.x = particle.scale.y = 8;
+        scene.add( particle );
+        save(intersects[0].point);
+        position[0]=intersects[0].point.x;
+        position[1]=intersects[0].point.y;
+        console.log(position);
+        showtextarea(position);
+    }
+}
+
+
+
+
+
+function addpoint(current,position) {
     sv.append('circle').attr({
         id: current,
         cx: position[0],
@@ -25,11 +125,7 @@ function addcircle(current,position) {
             }
         }
          showcomment(position,point_id);
-        //$(".panel-heading").hide();
-
-    }).on('mouseleave', function (e) {    //当鼠标离开标记点上时触发的动作
-
-    });
+    })
 }
 //单击提交按钮之后将标注信息写入后台
 function addmark(){
@@ -103,7 +199,7 @@ function showcomment(position,point_id){
        }
     }
 }
-function showtextarea(posintion){
+function showtextarea(position){
 
     var writecomment=$('<div class="panel panel-default col-md-4" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
                         '<blockquote class="heading pre-scrollable" style="padding: 0;margin:0"></blockquote>'+'<div class="panel-body" style="padding: 0;border:0">'+
@@ -112,6 +208,6 @@ function showtextarea(posintion){
                         '</div>'+'</div>'+'</div>');
 
     $("#showmark").remove();
-    $(".svg_content").append(writecomment);
-    $(".panel-default").css({"left": position[0]+45+"px", "top": position[1]+45+ "px"}).show();
+    $('body').append(writecomment);
+    $(".panel-default").css({"left": position[0]+"px", "top": position[1]+ "px"}).show();
 }

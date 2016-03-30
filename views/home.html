@@ -9,190 +9,28 @@
             margin: 0;
             overflow: hidden;
         }
+        #showmark{
+            position:absolute;
+            text-align: center;
+            z-index: 9999;
+            border: 0;
+            padding:0;
+
+        }
     </style>
     <script src="three.js"></script>
     <script src="Projector.js"></script>
     <script src="CanvasRenderer.js"></script>
     <script src="stats.js"></script>
     <script type="text/javascript" src="global/javascripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="mark.js"></script>
+    <script type="text/javascript" src="addobj.js"></script>
+    <script type="text/javascript" src="global/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="global/javascripts/d3.min.js"></script>
 </head>
 <body>
 
 <script>
-
-    var container, stats;
-    var camera, scene, renderer;
-    var particleMaterial;
-    var raycaster;
-    var mouse;
-    var objects = [];
-    init();
-    animate();
-    recovery();
-    function recovery() {
-        $.ajax({
-            type: "post",
-            url: "/mark/recovery",
-            dataType: "json",
-            data: {image_id: "1"},
-            success: function (data) {
-                $.each(data, function (index, val) {
-                    var particle = new THREE.Sprite(particleMaterial);
-                    particle.position.copy(JSON.parse(val.point));
-                    particle.scale.x = particle.scale.y = 16;
-                    scene.add(particle);
-                })
-            }
-        });
-    }
-
-        function init() {
-        container = document.createElement( 'div' );
-        document.body.appendChild( container );
-        var info = document.createElement( 'div' );
-        info.style.position = 'absolute';
-        info.style.top = '10px';
-        info.style.width = '100%';
-        info.style.textAlign = 'center';
-        container.appendChild( info );
-
-        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.position.set( 0, 300, 500 );
-
-        scene = new THREE.Scene();
-
-        var geometry = new THREE.BoxGeometry( 200, 200,200 );
-
-            var cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.8 } ) );
-            cube.position.set=(0, 0, 0);
-
-            cube.rotation.y +=1;
-            scene.add( cube );
-            objects.push( cube );
-            addsphere();
-
-
-        //
-
-        raycaster = new THREE.Raycaster();
-        mouse = new THREE.Vector2();
-
-        renderer = new THREE.CanvasRenderer();
-        renderer.setClearColor( 0xf0f0f0 );
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
-
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        container.appendChild( stats.domElement );
-
-        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-        document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-
-        window.addEventListener( 'resize', onWindowResize, false );
-
-    }
-
-    function onWindowResize() {
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-    }
-
-    function onDocumentTouchStart( event ) {
-
-        event.preventDefault();
-
-        event.clientX = event.touches[0].clientX;
-        event.clientY = event.touches[0].clientY;
-        onDocumentMouseDown( event );
-
-    }
-
-    function onDocumentMouseDown( event ) {
-
-        event.preventDefault();
-
-        mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
-
-        raycaster.setFromCamera( mouse, camera );
-
-        var intersects = raycaster.intersectObjects( objects );
-
-        if ( intersects.length > 0 ) {
-//            alert(intersects.length);
-            console.log(intersects[0]);
-
-            var particle = new THREE.Sprite( particleMaterial );
-            particle.position.copy( intersects[ 0 ].point );
-            particle.scale.x = particle.scale.y = 16;
-            scene.add( particle );
-            save(intersects[0].point);
-        }
-        function save(mark){
-            var point=JSON.stringify(mark);
-            console.log(point);
-            $.ajax({
-                type: "post",
-                url: "/mark/point",
-                dataType:"json",
-                data: {point:point},
-                success: function (data) {
-                   alert("1");
-                }
-
-            })
-        }
-
-        /*
-         // Parse all the faces
-         for ( var i in intersects ) {
-
-         intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
-
-         }
-         */
-    }
-
-    //画标记
-    function addsphere(){
-        var PI2 = Math.PI * 2;
-        particleMaterial = new THREE.SpriteCanvasMaterial( {
-            color: 0x0000ff,
-            program: function ( context ) {
-                context.beginPath();
-                context.arc( 0, 0, 0.5, 0, PI2, true );
-                context.fill();
-
-            }
-        } );
-    }
-
-    function animate() {
-
-        requestAnimationFrame( animate );
-
-        render();
-        stats.update();
-    }
-
-    var radius = 600;
-    var theta = 0;
-
-    function render() {
-
-
-        camera.lookAt( scene.position );
-
-        renderer.render( scene, camera );
-
-    }
 
 </script>
 
