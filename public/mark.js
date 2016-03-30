@@ -4,29 +4,7 @@
 //arr是个集合，用来存放svg画布上的点的id、cx、cy、text内容的
 
 //单击图片缩略图之后克隆图片到svg
-function clone(image_id,url) {
-    markcount(image_id);
-    img = d3.select('image');
-    if (img) {
-        img.remove();
-        d3.selectAll('circle').remove();
-        markclose();
-    }
-    sv.append('image').attr({
-        //追加图像属性
-        id: image_id,
-        'xlink:href': url,
-        height: '100%',
-        width: '100%'
-    }).on('click', function (e) { //当点击图像的某一点时出发的动作（绘制标记）
-        markcount(image_id);
-        var current=count+1;
-        $("#submit").val(current);
-         position = d3.mouse(document.getElementById(image_id));
-        addcircle(current, position);
-        showtextarea(position);
-    })
-}
+
 //单击画圆
 function addcircle(current,position) {
     sv.append('circle').attr({

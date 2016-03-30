@@ -21,20 +21,10 @@ var Point=require('../models/markPoint');
  */
 
 router.get('/', function (req, res) {
-    var point;
-    Point.get('1', function (err, points) {
-        if (err) {
-            console.log(err);
-            return res.redirect('/err');
-        }
-        console.log("ddddddddd"+points);
-
     res.render('home', {
         title: '登录界面',
-        points:points
        });
     });
-});
 /******************************************
  * 前端页面：login
  * 页面名称：登录
@@ -145,7 +135,16 @@ router.post('/mark/point',function(req,res) {
             return res.redirect('/p_err');
         }
     });
-    console.log("wwww");
+    Point.get('1', function (err, points) {
+        if (err) {
+            console.log(err);
+            return res.redirect('/p_err');
+        }
+        return res.json(points);
+    })
+});
+router.post('/mark/recovery',function(req,res) {
+
     Point.get('1', function (err, points) {
         if (err) {
             console.log(err);

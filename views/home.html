@@ -23,22 +23,28 @@
     var container, stats;
     var camera, scene, renderer;
     var particleMaterial;
-
     var raycaster;
     var mouse;
-
     var objects = [];
-
     init();
     animate();
-
-        var mark='<%=points.point%>';
-        var point=mark.replace(/&#34;/g,"\"");
-        console.log(point);
-        var particle = new THREE.Sprite( particleMaterial );
-        particle.position.copy(JSON.parse(point));
-        particle.scale.x = particle.scale.y = 16;
-        scene.add( particle );
+    recovery();
+    function recovery() {
+        $.ajax({
+            type: "post",
+            url: "/mark/recovery",
+            dataType: "json",
+            data: {image_id: "1"},
+            success: function (data) {
+                $.each(data, function (index, val) {
+                    var particle = new THREE.Sprite(particleMaterial);
+                    particle.position.copy(JSON.parse(val.point));
+                    particle.scale.x = particle.scale.y = 16;
+                    scene.add(particle);
+                })
+            }
+        });
+    }
 
         function init() {
         container = document.createElement( 'div' );
