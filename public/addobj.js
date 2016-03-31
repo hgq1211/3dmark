@@ -3,15 +3,18 @@
  */
 var container, stats;
 var camera, scene, renderer;
+var title='ffffffffffffff';
 var objects = [];
 $(function () {
     container = document.createElement('div');
     document.body.appendChild( container );
     var info = document.createElement('div');
+
     info.style.position = 'absolute';
     info.style.top = '10px';
     info.style.width = '100%';
     info.style.textAlign = 'center';
+    info.innerHTML=title;
     container.appendChild( info );
     renderer = new THREE.CanvasRenderer();
     renderer.setClearColor( 0xf0f0f0 );

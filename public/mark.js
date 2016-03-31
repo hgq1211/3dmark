@@ -209,5 +209,5 @@ function showtextarea(position){
 
     $("#showmark").remove();
     $('body').append(writecomment);
-    $(".panel-default").css({"left": position[0]+"px", "top": position[1]+ "px"}).show();
+    $(".panel-default").css({"left": 20+"px", "top": 30+ "px"}).show();
 }
