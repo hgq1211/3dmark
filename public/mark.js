@@ -7,17 +7,24 @@ var particleMaterial,container;
 var raycaster;
 var mouse;
 var position=[];
-function addsphere(){
-    var PI2 = Math.PI * 2;
+raycaster = new THREE.Raycaster();
+mouse = new THREE.Vector2();
+
+var PI2 = Math.PI * 2;
     particleMaterial = new THREE.SpriteCanvasMaterial( {
         color: 0x0000ff,
         program: function ( context ) {
             context.beginPath();
             context.arc( 0, 0, 0.5, 0, PI2, true );
             context.fill();
-
         }
-    } );
+    });
+function particle(intersects){
+    var particle = new THREE.Sprite( particleMaterial );
+    particle.position.copy( intersects);
+    particle.scale.x = particle.scale.y = 8;
+    particleMaterial.addEventListener('mouseover', onDocumentMouseOver, false);
+    scene.add( particle );
 }
 
 //提交当前标注信息
@@ -32,7 +39,6 @@ function savemark(mark){
         dataType:"json",
         data: {point:point,text:text},
         success: function (data) {
-            alert("2");
             recovery();
         }
     })
@@ -46,17 +52,13 @@ function recovery() {
         data: {image_id: "1"},
         success: function (data) {
             $.each(data, function (index, val) {
-                var particle = new THREE.Sprite(particleMaterial);
-                particle.position.copy(JSON.parse(val.point));
-                particle.scale.x = particle.scale.y = 8;
-                scene.add(particle);
+                particle(JSON.parse(val.point));
             })
         }
     });
 }
 function raycater() {
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
+
     var obj = document.getElementById("obj");
     obj.addEventListener('mousedown', onDocumentMouseDown, false);
     obj.addEventListener('touchstart', onDocumentTouchStart, false);
@@ -71,9 +73,7 @@ function onWindowResize() {
 }
 
 function onDocumentTouchStart( event ) {
-
     event.preventDefault();
-
     event.clientX = event.touches[0].clientX;
     event.clientY = event.touches[0].clientY;
     onDocumentMouseDown( event );
@@ -89,10 +89,8 @@ function onDocumentMouseDown( event ) {
 
     if ( intersects.length > 0 ) {
         console.log(intersects[0]);
-        var particle = new THREE.Sprite( particleMaterial );
-        particle.position.copy( intersects[ 0 ].point );
-        particle.scale.x = particle.scale.y = 8;
-        scene.add( particle );
+
+        particle(intersects[ 0 ].point );
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
@@ -100,7 +98,10 @@ function onDocumentMouseDown( event ) {
     }
 }
 
-
+function onDocumentMouseOver(event){
+    event.preventDefault();
+    alert("over");
+}
 
 
 
@@ -199,7 +200,7 @@ function showcomment(position,point_id){
 }
 function showtextarea(point,position){
     this.point=point;
-    var writecomment=$('<div class="panel panel-default col-md-3" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
+    var writecomment=$('<div class="panel panel-default col-md-2" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
                         '<blockquote class="heading pre-scrollable" style="padding: 0;margin:0"></blockquote>'+'<div class="panel-body" style="padding: 0;border:0">'+
                         '<div class="panel-body" style="padding: 0;border:0">'+'<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+
                         '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button"  onclick="savemark(point)">提交</button>'+

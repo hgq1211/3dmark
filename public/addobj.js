@@ -22,7 +22,7 @@ $(function () {
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.set( 0, 300, 500 );
+    camera.position.set( -300, 500, 500 );
 
     scene = new THREE.Scene();
 
@@ -33,7 +33,6 @@ $(function () {
     //cube.rotation.y = Math.random() * 2 * Math.PI;
     scene.add( cube );
     objects.push( cube );
-    addsphere();
 
     stats = new Stats();
     stats.domElement.style.position = 'absolute';

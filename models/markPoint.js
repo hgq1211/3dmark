@@ -34,8 +34,8 @@ Point.prototype.save = function save(callback) {
     uuid = uid.v4();//生成一个随机的用户ID
     //接下来的操作就是要把前端传递过来的数据插入到我们的数据表user之中
     //插入数据库
-    var sql = "insert into mark_info (mark_id,point,mark_date,image_id) values(?,?,?,?)";//这对应着我们数据库中的字段
-    mysql.query(sql, [uuid, this.point,time.minute,1], function (err, results, fields) {
+    var sql = "insert into mark_info (mark_id,point,mark_date,text,image_id) values(?,?,?,?,?)";//这对应着我们数据库中的字段
+    mysql.query(sql, [uuid, this.point,time.minute,this.text,1], function (err, results, fields) {
         if (err) {
             throw err;
         } else {
