@@ -126,6 +126,7 @@ router.post('/login', function (req, res) {
 router.post('/mark/point',function(req,res) {
     var mark = new Point({
         point:req.body.point,
+        text:req.body.text,
         image_id:'1'
     });
     console.log(req.body.point);

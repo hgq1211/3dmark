@@ -3,13 +3,13 @@
  */
 var container, stats;
 var camera, scene, renderer;
-var title='ffffffffffffff';
+var title='3D mark';
 var objects = [];
 $(function () {
     container = document.createElement('div');
+    container.id="obj";
     document.body.appendChild( container );
     var info = document.createElement('div');
-
     info.style.position = 'absolute';
     info.style.top = '10px';
     info.style.width = '100%';
@@ -41,6 +41,7 @@ $(function () {
     container.appendChild( stats.domElement );
     animate();
     recovery();
+    raycater();
 });
 
 function animate() {

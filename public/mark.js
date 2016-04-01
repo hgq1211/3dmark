@@ -21,18 +21,20 @@ function addsphere(){
 }
 
 //提交当前标注信息
-function save(mark){
+function savemark(mark){
+    alert(mark);
     var point=JSON.stringify(mark);
-    console.log(point);
+    var text=$("#marktext").val();
+    console.log("dnsdiani"+point);
     $.ajax({
         type: "post",
         url: "/mark/point",
         dataType:"json",
-        data: {point:point},
+        data: {point:point,text:text},
         success: function (data) {
+            alert("2");
             recovery();
         }
-
     })
 }
 //将数据库中的标注信息还原出来
@@ -52,17 +54,14 @@ function recovery() {
         }
     });
 }
-raycaster = new THREE.Raycaster();
-mouse = new THREE.Vector2();
-
-
-
-
-
-document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-window.addEventListener( 'resize', onWindowResize, false );
-
+function raycater() {
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    var obj = document.getElementById("obj");
+    obj.addEventListener('mousedown', onDocumentMouseDown, false);
+    obj.addEventListener('touchstart', onDocumentTouchStart, false);
+    window.addEventListener('resize', onWindowResize, false);
+}
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -94,11 +93,10 @@ function onDocumentMouseDown( event ) {
         particle.position.copy( intersects[ 0 ].point );
         particle.scale.x = particle.scale.y = 8;
         scene.add( particle );
-        save(intersects[0].point);
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
-        showtextarea(position);
+        showtextarea(intersects[0].point,position);
     }
 }
 
@@ -199,12 +197,12 @@ function showcomment(position,point_id){
        }
     }
 }
-function showtextarea(position){
-
-    var writecomment=$('<div class="panel panel-default col-md-4" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
+function showtextarea(point,position){
+    this.point=point;
+    var writecomment=$('<div class="panel panel-default col-md-3" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
                         '<blockquote class="heading pre-scrollable" style="padding: 0;margin:0"></blockquote>'+'<div class="panel-body" style="padding: 0;border:0">'+
                         '<div class="panel-body" style="padding: 0;border:0">'+'<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+
-                        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button"  onclick="addmark()">提交</button>'+
+                        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button"  onclick="savemark(point)">提交</button>'+
                         '</div>'+'</div>'+'</div>');
 
     $("#showmark").remove();

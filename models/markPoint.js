@@ -11,6 +11,7 @@ var uid = require('../utils/uuid');//后边我们用于生成用户ID
  */
 function Point(obj) {
     this.point = obj.point;
+    this.text = obj.text;
 }
 mysql = client.getDbCon();
 module.exports = Point;//将我们的User对象暴露给外部，一遍外边调用
