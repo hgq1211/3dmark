@@ -127,6 +127,7 @@ router.post('/mark/point',function(req,res) {
     var mark = new Point({
         point:req.body.point,
         text:req.body.text,
+        point_id:req.query.point_name,
         image_id:'1'
     });
     console.log(req.body.point);
@@ -152,6 +153,17 @@ router.post('/mark/recovery',function(req,res) {
             return res.redirect('/p_err');
         }
         return res.json(points);
+    })
+});
+//查询当前图像最大标注id
+router.post('/max/point',function(req,res) {
+
+    Point.findmax('1', function (err, count) {
+        if (err) {
+            console.log(err);
+            return res.redirect('/p_err');
+        }
+        return res.json(count);
     })
 });
 module.exports=router;

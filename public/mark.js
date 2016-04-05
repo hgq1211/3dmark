@@ -7,6 +7,7 @@ var particleMaterial,container;
 var raycaster;
 var mouse;
 var position=[];
+var count;
 raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
 
@@ -21,11 +22,23 @@ var PI2 = Math.PI * 2;
     });
 
 function particle(intersects){
+    markcount("1");
+    alert(count);
+    var current=count+1;
     var particle = new THREE.Sprite( particleMaterial );
     console.log(particle);
     particle.position.copy( intersects);
     particle.scale.x = particle.scale.y = 8;
-
+    particle.name=current;
+    $("#point_name").val(current);
+    alert(current);
+    //particle.append("text")
+    //    .attr("class","forceText")
+    //    .attr("x",function(){ return position[0]; })
+    //    .attr("y",function(){ return position[1]; })
+    //    .attr("dy", ".4em")
+    //    //.attr("dx", "-.4em")
+    //    .text(function(){ return current; });
     scene.add( particle );
 }
 
@@ -33,12 +46,13 @@ function particle(intersects){
 function savemark(mark){
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
-    console.log("dnsdiani"+point);
+    var point_name=$("#point_name").val();
+    alert(point_name);
     $.ajax({
         type: "post",
         url: "/mark/point",
         dataType:"json",
-        data: {point:point,text:text},
+        data: {point:point,text:text,point_name:point_name},
         success: function (data) {
             recovery();
         }
@@ -52,10 +66,6 @@ function recovery() {
         dataType: "json",
         data: {image_id: "1"},
         success: function (data) {
-            if(!data){
-                alert("ss");
-                $("blockquote").append("<h4>暂无标注，现在开起标注之旅吧！</h4>")
-            }
             showcomment(data);
             $.each(data, function (index, val) {
                 particle(JSON.parse(val.point));
@@ -63,8 +73,8 @@ function recovery() {
         }
     });
 }
+//初始化鼠标事件
 function raycater() {
-
     var obj = document.getElementById("obj");
     obj.addEventListener('mousedown', onDocumentMouseDown, false);
     obj.addEventListener('touchstart', onDocumentTouchStart, false);
@@ -99,8 +109,8 @@ function onDocumentMouseDown( event ) {
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
+        $("#edit").remove();
         showtextarea(intersects[0].point);
-
     }
 }
 
@@ -109,54 +119,9 @@ function onDocumentMouseOver(event){
     alert("over");
 }
 
-
-
-function addpoint(current,position) {
-    sv.append('circle').attr({
-        id: current,
-        cx: position[0],
-        cy: position[1],
-        r: cr,
-        fill: fillStyle,
-        'stroke-width': strokeWidth,
-        stroke: strokeStyle
-    }).on('mouseover', function (e) {  //当鼠标移动到标记点上时触发的动作
-        var point_id = this.getAttribute('id');
-        $("#submit").val(point_id);
-        for(var i=0;i<arr.length;i++){
-            if(point_id==arr[i][0]){
-            position[0]=arr[i][1];
-            position[1]=arr[i][2];
-            }
-        }
-         showcomment(position,point_id);
-    })
-}
-//单击提交按钮之后将标注信息写入后台
-function addmark(){
-    var text=$("#marktext").val();
-    var image_id= d3.select('image').attr('id');
-    var point_id=$("#submit").val();
-    $.ajax({
-        type: "post",
-        url:"/mark/upload",
-        data:{image_id:image_id,markX:position[0],markY:position[1],text:text,point_id:point_id},
-        success:function(data){
-            markcount(image_id);//提交之后重新计算标注数目，更新count的值
-            markpoint(image_id);
-            for(var i=0;i<arr.length;i++){
-                if(point_id==arr[i][0]){
-                    position[0]=arr[i][1];
-                    position[1]=arr[i][2];
-                }
-            }
-            showcomment(position,point_id);
-            $("#marktext").val("");
-        }
-    })
-}
 //查询当前图片提交过的标注点有多少（mark_id）
 function markcount(image_id) {
+
     $.ajax({
         type: "post",
         url: "/max/point",
@@ -167,31 +132,10 @@ function markcount(image_id) {
         }
     });
 }
-//读取数据库已经有标注信息，并还原到图片上
-function markpoint(image_id){
-    $.ajax({
-        type: "post",
-        url:"/mark/point",
-        data:{image_id:image_id},
-        success:function(data){
-            $(".heading").empty();
-
-            $.each(data, function(index, val) {
-                position[0]=val.markX;
-                position[1]=val.markY;
-                arr[index]=[val.point_id,position[0], position[1], val.text,val.mark_date,val.d_name];
-                console.log(arr[index]);
-                console.log(arr.length);
-                addcircle(val.point_id,position);
-                //alert(val.mark_date);
-            });
-        }
-    });
-}
 
 //隐藏标注编写框
 function markclose(){
-    $("#markpoint").hide();
+    $("blockquote").hide();
 }
 function editclose(){
     $("#edit").hide();
@@ -203,7 +147,10 @@ function showcomment(data){
                 var text=$("<h4 style='text-align: left'></h4>").text("ID "+val.point_id+":  "+val.text);
                 var name=$("<small class='pull-right'>"+val.d_name+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
                 $("blockquote").append(text).append(name).append('<hr>');
-            })
+            });
+   if(!data.length){
+                 $("blockquote").append("<h4>暂无标注，您可以单击图像任一点开始标注！！</h4>");
+            }
         }
 
 function showtextarea(point){
@@ -215,11 +162,14 @@ function showtextarea(point){
         '</div>'+'</div>');
 
     $('#markpoint').append(writecomment);
+
+    //$("#eddit").css({"right": 10+"px", "bottom": 152+ "px"}).show();
+}
+function empty(){
     if(!$("#marktext").val()){
         alert("ee");
         $("#submit").attr({
             "disabled":"disabled"
         });
     }
-    //$("#eddit").css({"right": 10+"px", "bottom": 152+ "px"}).show();
 }

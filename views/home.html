@@ -12,7 +12,6 @@
         }
         #markpoint{
             position:absolute;
-            text-align: center;
             z-index: 9999;
             top:10% ;
             right:1%;
@@ -20,6 +19,12 @@
         #eddit{
             position:absolute;
             z-index: 9999;
+        }
+        .forceText {
+            fill: black ;
+            text-anchor: middle;
+            font-size: 20px;
+            font-family: arial;
         }
     </style>
     <link href="global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
@@ -40,6 +45,7 @@
     <button type="button" class="close" onclick="markclose()">×</button>
     <blockquote class="heading pre-scrollable" style="padding: 0;margin:0;border:0"></blockquote>
 </div>
+<input id="point_name" value="" style="display: none">
 <script>
 
 </script>

@@ -12,6 +12,7 @@ var uid = require('../utils/uuid');//后边我们用于生成用户ID
 function Point(obj) {
     this.point = obj.point;
     this.text = obj.text;
+    this.point_id=obj.point_id;
 }
 mysql = client.getDbCon();
 module.exports = Point;//将我们的User对象暴露给外部，一遍外边调用
@@ -34,8 +35,8 @@ Point.prototype.save = function save(callback) {
     uuid = uid.v4();//生成一个随机的用户ID
     //接下来的操作就是要把前端传递过来的数据插入到我们的数据表user之中
     //插入数据库
-    var sql = "insert into mark_info (mark_id,point,mark_date,text,image_id) values(?,?,?,?,?)";//这对应着我们数据库中的字段
-    mysql.query(sql, [uuid, this.point,time.minute,this.text,1], function (err, results, fields) {
+    var sql = "insert into mark_info (mark_id,point,mark_date,text,image_id,point_id) values(?,?,?,?,?,?)";//这对应着我们数据库中的字段
+    mysql.query(sql, [uuid, this.point,time.minute,this.text,1,this.point_id], function (err, results, fields) {
         if (err) {
             throw err;
         } else {
@@ -57,6 +58,19 @@ Point.get = function (image_id,callback) {
         else {
             console.log(results);
             callback(err, results, fields);//我们在这返回查询成功时的结果
+        }
+    })
+};
+Point.findmax = function (image_id,callback) {
+    var sql = "select max(point_id) as max_id from mark_info where mark_info.image_id='1' ";//
+    console.log(sql);
+    mysql.query(sql, function (err, results, fields) {
+        if (err) {
+            throw err;
+        }
+        else {
+            console.log(results);
+            callback(err, results[0], fields);//我们在这返回查询成功时的结果
         }
     })
 };
