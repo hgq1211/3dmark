@@ -19,17 +19,18 @@ var PI2 = Math.PI * 2;
             context.fill();
         }
     });
+
 function particle(intersects){
     var particle = new THREE.Sprite( particleMaterial );
+    console.log(particle);
     particle.position.copy( intersects);
     particle.scale.x = particle.scale.y = 8;
-    particleMaterial.addEventListener('mouseover', onDocumentMouseOver, false);
+
     scene.add( particle );
 }
 
 //提交当前标注信息
 function savemark(mark){
-    alert(mark);
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
     console.log("dnsdiani"+point);
@@ -51,6 +52,11 @@ function recovery() {
         dataType: "json",
         data: {image_id: "1"},
         success: function (data) {
+            if(!data){
+                alert("ss");
+                $("blockquote").append("<h4>暂无标注，现在开起标注之旅吧！</h4>")
+            }
+            showcomment(data);
             $.each(data, function (index, val) {
                 particle(JSON.parse(val.point));
             })
@@ -89,17 +95,17 @@ function onDocumentMouseDown( event ) {
 
     if ( intersects.length > 0 ) {
         console.log(intersects[0]);
-
         particle(intersects[ 0 ].point );
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
-        showtextarea(intersects[0].point,position);
+        showtextarea(intersects[0].point);
+
     }
 }
 
 function onDocumentMouseOver(event){
-    event.preventDefault();
+    //event.preventDefault();
     alert("over");
 }
 
@@ -169,6 +175,7 @@ function markpoint(image_id){
         data:{image_id:image_id},
         success:function(data){
             $(".heading").empty();
+
             $.each(data, function(index, val) {
                 position[0]=val.markX;
                 position[1]=val.markY;
@@ -184,29 +191,35 @@ function markpoint(image_id){
 
 //隐藏标注编写框
 function markclose(){
-    $("#showmark").hide();
+    $("#markpoint").hide();
+}
+function editclose(){
+    $("#edit").hide();
 }
 //按照point_id 显示同一个点下多个标注内容
-function showcomment(position,point_id){
-    showtextarea(position);
-    $(".heading").empty();
-    for(var i=0;i<arr.length;i++){
-        if(arr[i][0]==point_id){
-        var text=$("<h5></h5>").text(arr[i][3]);
-        var name=$("<small class='pull_right'>"+arr[i][5]+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+arr[i][4]+"'></time></small>").timeago();
-        $("blockquote").append(text).append(name).append('<hr>');
-       }
-    }
-}
-function showtextarea(point,position){
-    this.point=point;
-    var writecomment=$('<div class="panel panel-default col-md-2" id="showmark">'+'<button type="button" class="close" onclick="markclose()">×</button>'+
-                        '<blockquote class="heading pre-scrollable" style="padding: 0;margin:0"></blockquote>'+'<div class="panel-body" style="padding: 0;border:0">'+
-                        '<div class="panel-body" style="padding: 0;border:0">'+'<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+
-                        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button"  onclick="savemark(point)">提交</button>'+
-                        '</div>'+'</div>'+'</div>');
+function showcomment(data){
+            $(".heading").empty();
+            $.each(data, function(index, val){
+                var text=$("<h4 style='text-align: left'></h4>").text("ID "+val.point_id+":  "+val.text);
+                var name=$("<small class='pull-right'>"+val.d_name+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
+                $("blockquote").append(text).append(name).append('<hr>');
+            })
+        }
 
-    $("#showmark").remove();
-    $('body').append(writecomment);
-    $(".panel-default").css({"left": 20+"px", "top": 30+ "px"}).show();
+function showtextarea(point){
+    this.point=point;
+    var writecomment=$('<div style="padding: 0;border:0" id="edit">'+
+        '<button type="button" class="close" onclick="editclose()" >×</button>'+
+        '<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+
+        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button" id="submit" onclick="savemark(point);editclose()">提交</button>'+
+        '</div>'+'</div>');
+
+    $('#markpoint').append(writecomment);
+    if(!$("#marktext").val()){
+        alert("ee");
+        $("#submit").attr({
+            "disabled":"disabled"
+        });
+    }
+    //$("#eddit").css({"right": 10+"px", "bottom": 152+ "px"}).show();
 }

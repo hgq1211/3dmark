@@ -4,19 +4,23 @@
     <title>3D mark</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
     <style>
         body {
             margin: 0;
             overflow: hidden;
         }
-        #showmark{
+        #markpoint{
             position:absolute;
             text-align: center;
             z-index: 9999;
-            border: 0;
-            padding:0;
+            top:10% ;
+            right:1%;
         }
-
+        #eddit{
+            position:absolute;
+            z-index: 9999;
+        }
     </style>
     <link href="global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
     <script src="three.js"></script>
@@ -28,9 +32,14 @@
     <script type="text/javascript" src="addobj.js"></script>
     <script type="text/javascript" src="global/javascripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="global/javascripts/d3.min.js"></script>
+    <script type="text/javascript" src="global/javascripts/timeago.js"></script>
+    <script type="text/javascript" src="global/javascripts/timeago.zh-cn.js"></script>
 </head>
 <body>
-
+<div class="col-md-3 alert-success" id="markpoint" >
+    <button type="button" class="close" onclick="markclose()">×</button>
+    <blockquote class="heading pre-scrollable" style="padding: 0;margin:0;border:0"></blockquote>
+</div>
 <script>
 
 </script>
