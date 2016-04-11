@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>3D mark</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #markpoint{
+            position:absolute;
+            z-index: 9999;
+            top:10% ;
+            right:1%;
+        }
+        #eddit{
+            position:absolute;
+            z-index: 9999;
+        }
+        .forceText {
+            fill: black ;
+            text-anchor: middle;
+            font-size: 20px;
+            font-family: arial;
+        }
+    </style>
+    <link href="global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+    <script src="three.js"></script>
+    <script src="Projector.js"></script>
+    <script src="CanvasRenderer.js"></script>
+    <script src="stats.js"></script>
+    <script type="text/javascript" src="global/javascripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="mark.js"></script>
+    <script type="text/javascript" src="addobj.js"></script>
+    <script type="text/javascript" src="global/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="global/javascripts/d3.min.js"></script>
+    <script type="text/javascript" src="global/javascripts/timeago.js"></script>
+    <script type="text/javascript" src="global/javascripts/timeago.zh-cn.js"></script>
+
+</head>
+<body>
+
+<div class="col-md-3 alert-success" id="markpoint" >
+    <!--<button type="button" class="close" onclick="markclose()">×</button>-->
+    <blockquote class="heading pre-scrollable" style="padding: 0;margin:0;border:0"></blockquote>
+</div>
+<input id="point_name" value="" style="display: none">
+<script>
+
+
+</script>
+
+</body>
+</html>

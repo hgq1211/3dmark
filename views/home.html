@@ -1,53 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <title>3D mark</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="global/stylesheets/normalize.css"/>
+    <link rel="stylesheet" href="global/stylesheets/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="global/stylesheets/home/jquery.fullPage.css"/>
+    <link type="text/css" rel="stylesheet" href="global/stylesheets/home/animate.min.css"/>
+    <link rel="stylesheet" type="text/css" href="global/stylesheets/home/demo.css"/>
+    <link rel="stylesheet" type="text/css" href="global/stylesheets/home/component.css"/>
+    <script src="global/javascripts/home/modernizr.custom.js"></script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
+
+        /*navbar*/
+        .navbar {
+            background-color: rgba(255, 255, 255, 0);
+            border-bottom: 0px;
         }
-        #markpoint{
-            position:absolute;
-            z-index: 9999;
-            top:10% ;
-            right:1%;
+
+        #logo a {
+            color: rgb(255, 255, 255);
+            opacity: .7;
         }
-        #eddit{
-            position:absolute;
-            z-index: 9999;
+
+        .navbar-default .navg-item .navg-link {
+            color: rgb(255, 255, 255);
+            opacity: .5;
+            font-weight: 200;
         }
-        .forceText {
-            fill: black ;
-            text-anchor: middle;
-            font-size: 20px;
-            font-family: arial;
+
+        .navbar-default .navg-item:hover .navg-link {
+            color: #ffffff;
+            opacity: 1;
+        }
+
+        .navbar-default .navbar-collapse {
+            border-width: 0px;
+        }
+
+        /*section 1*/
+        a, a:hover, a:visited, a:link {
+            text-decoration: none;
+        }
+
+        #pagescroll .section1 {
+            background: rgb(75, 125, 116);
+            /*background-size: cover;*/
+        }
+
+        #pagescroll .section .inner {
+            height: 100%;
+            width: 100%;
+            line-height: 1.7em;
+            text-align: center;
+            display: table;
+            color: rgb(255, 255, 255);
+        }
+
+        #pagescroll .section .main {
+            margin-top: 255px;
+        }
+
+        #pagescroll .section .summary {
+            font-size: 30px;
+            color: rgb(255, 255, 255);
+            margin: 1em 0;
+            line-height: 1.7em;
+        }
+
+        #pagescroll .section .button {
+            display: inline-block;
+            height: 44px;
+            line-height: 44px;
+            border: 2px solid rgba(255, 255, 255, .3);
+            border: 2px solid #fff \9;
+            border-radius: 10px;
+            padding: 0 36px;
+            color: rgba(255, 255, 255, .6);
+            color: #fff \9;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        #pagescroll .section .casually {
+            background: #136ec2;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        #pagescroll .section .button:hover {
+            border-color: rgba(255, 255, 255, .7);
+            color: rgba(255, 255, 255, .9);
+        }
+
+        #elasticstack img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #pagescroll .section2 {
+            background-color: rgb(86, 188, 138);
+        }
+
+        #pagescroll .section3 {
+            background-color: rgb(44, 96, 106);
+        }
+
+        /*左右滑动控制按钮*/
+        #pagescroll .section3 .fp-prev {
+            left: 5%;
+            width: 41px;
+            height: 69px;
+            background: url(global/images/home/icon-slides.png) no-repeat -84px 50%;
+        }
+
+        #pagescroll .section3 .fp-next {
+            right: 5%;
+            width: 41px;
+            height: 69px;
+            background: url(global/images/home/icon-slides.png) no-repeat -125px 50%;
+        }
+
+        #pagescroll .section3 .fp-prev:hover {
+            background-position: 0px 50%;
+        }
+
+        #pagescroll .section3 .fp-next:hover {
+            background-position: -43px 50%;
+        }
+
+        #pagescroll .section3 img {
+            display: block;
+            margin: 2% auto;
+        }
+
+        #pagescroll .section3 .txt {
+            line-height: 30px;
+            text-align: center;
+        }
+
+        #pagescroll .section4 {
+            background-color: rgb(124, 189, 157);
         }
     </style>
-    <link href="global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
-    <script src="three.js"></script>
-    <script src="Projector.js"></script>
-    <script src="CanvasRenderer.js"></script>
-    <script src="stats.js"></script>
-    <script type="text/javascript" src="global/javascripts/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="mark.js"></script>
-    <script type="text/javascript" src="addobj.js"></script>
-    <script type="text/javascript" src="global/javascripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="global/javascripts/d3.min.js"></script>
-    <script type="text/javascript" src="global/javascripts/timeago.js"></script>
-    <script type="text/javascript" src="global/javascripts/timeago.zh-cn.js"></script>
 </head>
-<body>
-<div class="col-md-3 alert-success" id="markpoint" >
-    <button type="button" class="close" onclick="markclose()">×</button>
-    <blockquote class="heading pre-scrollable" style="padding: 0;margin:0;border:0"></blockquote>
-</div>
-<input id="point_name" value="" style="display: none">
-<script>
 
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!--小屏幕导航按钮和logo-->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="logo" id="logo">
+                <a href="" class="navbar-brand"><b>名称</b></a>
+            </div>
+        </div>
+        <!--小屏幕导航按钮和logo-->
+        <!--导航-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="navg-item">
+                    <a class="navg-link" href="/">板块一</a>
+                </li>
+                <li class="navg-item">
+                    <a class="navg-link" href="/">板块二</a>
+                </li>
+                <li class="navg-item">
+                    <a class="navg-link" href="/">板块三</a>
+                </li>
+                <li class="navg-item">
+                    <a class="navg-link" href="/">板块四</a>
+                </li>
+                <li class="navg-item">
+                    <a class="navg-link" href="admin_login">管理员测试登录入口</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navg-item">
+                    <a class="navg-link" href="/login"><span class="glyphicon glyphicon-user"></span>&nbsp;注册/登录</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="pagescroll">
+    <section class="section section1">
+        <div class="container">
+            <header>
+                <h2>标题名</h2>
+            </header>
+            <ul id="elasticstack" class="elasticstack">
+                <li><img src="global/images/home/1.jpg" alt="01"/><h5>12</h5></li>
+                <li><img src="global/images/home/2.jpg" alt="02"/><h5>12</h5></li>
+                <li><img src="global/images/home/3.jpg" alt="03"/><h5>12</h5></li>
+                <li><img src="global/images/home/4.jpg" alt="04"/><h5>12</h5></li>
+                <li><img src="global/images/home/5.jpg" alt="05"/><h5>12</h5></li>
+                <li><img src="global/images/home/6.jpg" alt="06"/><h5>12</h5></li>
+                <li><img src="global/images/home/7.jpg" alt="07"/><h5>12</h5></li>
+                <li><img src="global/images/home/8.jpg" alt="08"/><h5>12</h5></li>
+            </ul>
+        </div>
+        <!-- /container -->
+    </section>
+    <section class="section section2">
+        <div class="inner">
+            <div class="main">
+                <p class="summary">巴拉巴拉拉巴拉巴拉</p>
+
+                <p class="into">
+                    <a href="#" class="button casually">随便看看</a>
+                    <a href="/login" class="button">马上进入</a>
+                </p>
+            </div>
+        </div>
+
+    </section>
+    <section class="section section3">
+        <div class="slide">
+            <div class="warp" style="text-align:center">
+                <h1>1111111111111111111111</h1>
+                <h4>11111111111111111</h4>
+            </div>
+            <img src="global/images/home/1.jpg" alt="">
+
+            <p class="txt"></p>
+        </div>
+        <div class="slide">
+            <div class="warp" style="text-align:center">
+                <h1>2222222222222222222222</h1>
+                <h4>2222222222</h4>
+            </div>
+            <img src="global/images/home/2.jpg" alt="">
+
+            <p class="txt"></p>
+        </div>
+    </section>
+    <section class="section section4">
+
+    </section>
+</div>
+
+<script src="global/javascripts/jquery-2.1.4.min.js"></script>
+<script src="global/javascripts/home/jquery.easing.min.js"></script>
+<script src="global/javascripts/home/jquery.fullPage.min.js"></script>
+<script src="global/javascripts/bootstrap.min.js"></script>
+<script src="global/javascripts/home/draggabilly.pkgd.min.js"></script>
+<script src="global/javascripts/home/elastiStack.js"></script>
+<script>
+    $(function () {
+        $('#pagescroll').fullpage({
+            navigation: true
+        });
+        /*开启拖拽图片*/
+        new ElastiStack(document.getElementById('elasticstack'));
+    });
 </script>
 
 </body>

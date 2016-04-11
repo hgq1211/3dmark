@@ -113,7 +113,8 @@ routes.post('/downtoken', function (req, res) {
 });
 
 routes.get('/p_upload', function (req, res) {
-    res.render('patient/p_upload', {
+    res.render('p_upload', {
+        title:'标注',
         domain: config.Domain,
         uptoken_url: config.Uptoken_Url
     });

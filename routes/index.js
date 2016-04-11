@@ -10,6 +10,7 @@ var join = path.join;
 //现在我们把刚才创建的user。js引入到这里
 var User=require('../models/user');
 var Point=require('../models/markPoint');
+var Image=require('../models/image');
 
 /******************************************
  * 前端页面：home
@@ -22,7 +23,7 @@ var Point=require('../models/markPoint');
 
 router.get('/', function (req, res) {
     res.render('home', {
-        title: '登录界面',
+        title: '登录界面'
        });
     });
 /******************************************
@@ -49,9 +50,19 @@ router.get('/jumpwait', function (req, res) {
         title: '注册成功'
     });
 });
+router.get('/3dmark', function (req, res) {
+    res.render('3dmark', {
+        title: '标注界面'
+    });
+});
+router.get('/objmark', function (req, res) {
+    res.render('objmark', {
+        title: 'obj标注界面'
+    });
+});
 //req.session.user.p_nickname从我们刚才存进session的数据里面取出用户名，，调用get方法，，后边的user参数是我们返回时的数据对象
 router.get('/p_index', function (req, res) {
-    User.get(req.session.user.p_nickname,function(err,user) {
+    User.get(req.session.user.nickname,function(err,user) {
         if (err) {
             res.redirect('/login');
         }
@@ -76,12 +87,12 @@ router.post('/p_reg', function (req, res) {
     //将注册页面传递过来的参数封装到 newUser 这个对象中
     //我们创建一个User对象，并把它付给newUser
     var newUser = new User({
-        p_nickname: req.body.nickname,
+        nickname: req.body.nickname,
         password:password//密码我们是在上边加密时获取的，方法跟用户名一样，这时的密码已经经过了加密处理
     });
 
     //检查用户名是否已经存在
-    User.get(newUser.p_nickname, function (err, user) {
+    User.get(newUser.nickname, function (err, user) {
         if (user) {
             req.flash('error', '用户已存在!');
             return res.redirect('/p_reg');//返回患者注册页，，，如果已注册  我们就返回去让用户重新填写，，，当然这只是最基本的做法
@@ -127,8 +138,9 @@ router.post('/mark/point',function(req,res) {
     var mark = new Point({
         point:req.body.point,
         text:req.body.text,
-        point_id:req.query.point_name,
-        image_id:'1'
+        point_id:req.body.point_name,
+        image_id:'1',
+        user_id:req.session.user.user_id
     });
     console.log(req.body.point);
     mark.save(function (err) {
@@ -166,93 +178,20 @@ router.post('/max/point',function(req,res) {
         return res.json(count);
     })
 });
+//上传用户图像
+router.post('/image_upload',function(req,res) {
+    var img_url=req.body.image_url;
+    var image_name=req.body.image_name;
+    var imgobj=new Image({
+        img_url:img_url,
+        image_name:image_name,
+        user_id:req.session.user.user_id
+    });
+    imgobj.save(function(err){
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/error');
+        }
+    })
+});
 module.exports=router;
-
-//router.get('/login', function (req, res) {
-
-//    res.render('login', {
-//        title: '登录界面',
-//        success: req.flash('success').toString(),
-//        error: req.flash('error').toString()
-//    });
-//});
-////实现登录功能
-//router.post('/login', function (req, res) {
-//    var md5 = crypto.createHash('md5');
-//    var nickName = req.body.nickname;//登录帐号
-//    var password = md5.update(req.body.password).digest('base64');//登录密码
-//
-//    if (nickName == '' || password == '') {
-//        req.flash('error', '请输入登录账户/登录密码！');
-//        return res.redirect('/login');
-//    }
-//        t.get(nickName, function (err, user) {
-//            if (!user) {
-//                req.flash('error', ' 用户不存在！');
-//                return res.redirect('/login');
-//            }
-//            if (user.password != password) {
-//                req.flash('error', ' 登录密码错误');
-//                return res.redirect('/login');
-//            }
-//            req.session.user = user;
-//            req.flash('success', ' 登入成功');
-//            res.redirect('/p_index');
-//        });
-//});
-//router.get('/p_index', function (req, res) {
-//    t.get(req.session.user.p_nickname,function(err,user){
-//        if(err){
-//            res.redirect('/login');
-//        }
-//        res.render('p_index', {
-//            title: '患者主页',
-//            user:user
-//        });
-//    })
-//});
-//router.get('/p_reg', function (req, res) {
-//    res.render('p_reg', {
-//        title: '注册页面'
-//    });
-//});
-//router.get('/jumpwait', function (req, res) {
-//    res.render('jumpwait', {
-//        title: '注册成功'
-//    });
-//});
-//
-//router.post('/p_reg', function (req, res) {
-//    //检验用户两次输入的口令是否一致
-//    if (req.body['password-repeat'] != req.body['password']) {
-//        req.flash('error', '两次输入的密码不一致');
-//        return res.redirect('/p_reg');//返回患者注册页面
-//    }
-//    //生成密码的 md5 值
-//    var md5 = crypto.createHash("md5");
-//    var password = md5.update(req.body.password).digest('base64');
-//    //将注册页面传递过来的参数封装到 newUser 这个对象中
-//    var newUser = new t({
-//        p_nickname: req.body.nickname,
-//        password:password
-//    });
-//
-//    //检查用户名是否已经存在
-//    t.get(newUser.p_nickname, function (err, user) {
-//        if (user) {
-//            req.flash('error', '用户已存在!');
-//            return res.redirect('/p_reg');//返回患者注册页
-//        }
-//        console.log(user);
-//        // 如果数据库中不存在这个新用户名，则新增患者用户
-//        newUser.save(function (err) {
-//            if (err) {
-//                req.flash('error', err);
-//                return res.redirect('/p_index');//注册失败返回患者注册页
-//            }
-//            console.log("11111");
-//            res.redirect('/jumpwait');//注册成功后跳转到提示注册成功的页面，5秒后跳转至登录主界面
-//        });
-//    });
-//});
-//

@@ -10,7 +10,7 @@ var uid = require('../utils/uuid');//后边我们用于生成用户ID
 *
  */
 function User(obj) {
-    this.p_nickname = obj.p_nickname;
+    this.nickname = obj.nickname;
     this.password = obj.password;
 }
 mysql = client.getDbCon();
@@ -30,16 +30,12 @@ User.prototype.save = function save(callback) {
         (date.getHours()<10?'0'+date.getHours():date.getHours() )+ ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ":" + (date.getSeconds()<10?'0'+date.getSeconds():date.getSeconds())
     };
     //定义一个user对象，包含了我们传递的属性
-    var user = {
-        p_nickname: this.p_nickname,
-        p_register_date: time.minute,//我们取的是minute这一格式
-        password: this.password
-    };
+
     uuid = uid.v4();//生成一个随机的用户ID
     //接下来的操作就是要把前端传递过来的数据插入到我们的数据表user之中
     //插入数据库
-    var sql = "insert into user (p_nickname,p_register_date,p_id,password) values(?,?,?,?)";//这对应着我们数据库中的字段
-    mysql.query(sql, [user.p_nickname, user.p_register_date, uuid, user.password], function (err, results, fields) {
+    var sql = "insert into user (nickname,register_date,user_id,password) values(?,?,?,?)";//这对应着我们数据库中的字段
+    mysql.query(sql, [this.nickname, time.minute, uuid, this.password], function (err, results, fields) {
         if (err) {
             throw err;
         } else {
@@ -52,7 +48,7 @@ User.prototype.save = function save(callback) {
 //User的 get方法  用于获取给定用户名的所有信息。。。。User的方法名自取，在index调用时与之对应即可，，匿名函数可以有自己的名字
 //这样也没有什么影响，，，，都可以
 User.get = function (nickname, callback) {
-    var sql = "select * from user where user.p_nickname='" + nickname + "'";//nickname就是我们给定的用户名变量
+    var sql = "select * from user where user.nickname='" + nickname + "'";//nickname就是我们给定的用户名变量
     console.log(sql);
     mysql.query(sql, function (err, results, fields) {
         if (err) {

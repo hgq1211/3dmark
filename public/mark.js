@@ -23,7 +23,7 @@ var PI2 = Math.PI * 2;
 
 function particle(intersects){
     markcount("1");
-    alert(count);
+    //alert(count);
     var current=count+1;
     var particle = new THREE.Sprite( particleMaterial );
     console.log(particle);
@@ -31,7 +31,7 @@ function particle(intersects){
     particle.scale.x = particle.scale.y = 8;
     particle.name=current;
     $("#point_name").val(current);
-    alert(current);
+
     //particle.append("text")
     //    .attr("class","forceText")
     //    .attr("x",function(){ return position[0]; })
@@ -47,7 +47,6 @@ function savemark(mark){
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
     var point_name=$("#point_name").val();
-    alert(point_name);
     $.ajax({
         type: "post",
         url: "/mark/point",
@@ -145,7 +144,7 @@ function showcomment(data){
             $(".heading").empty();
             $.each(data, function(index, val){
                 var text=$("<h4 style='text-align: left'></h4>").text("ID "+val.point_id+":  "+val.text);
-                var name=$("<small class='pull-right'>"+val.d_name+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
+                var name=$("<small class='pull-right'>"+val.nickname+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
                 $("blockquote").append(text).append(name).append('<hr>');
             });
    if(!data.length){
@@ -167,7 +166,7 @@ function showtextarea(point){
 }
 function empty(){
     if(!$("#marktext").val()){
-        alert("ee");
+
         $("#submit").attr({
             "disabled":"disabled"
         });

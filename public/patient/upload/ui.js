@@ -204,14 +204,14 @@ FileProgress.prototype.setComplete = function(up, info) {
         str = "<div><strong>Link:</strong><a href=" + url + " target='_blank' > " + link + "</a></div>" +
             "<div class=hash><strong>Hash:</strong>" + res.hash + "</div>";
 		console.log(url);
-
+        var image_name=res.key;
         var image_url=url;
         //console.log(imageurl);
-        var data={image_url:image_url};
+        var data={image_url:image_url,image_name:image_name};
 
         $.ajax({
             type:"post",
-            url:"/patient/imageupload",
+            url:"/image_upload",
             data:data,
 //          data:{"obj":$('#svg').selectAll('circle')},
             success:function(){
