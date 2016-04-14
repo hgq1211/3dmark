@@ -35,7 +35,7 @@ User.prototype.save = function save(callback) {
     //接下来的操作就是要把前端传递过来的数据插入到我们的数据表user之中
     //插入数据库
     var sql = "insert into user (nickname,register_date,user_id,password) values(?,?,?,?)";//这对应着我们数据库中的字段
-    mysql.query(sql, [this.nickname, time.minute, uuid, this.password], function (err, results, fields) {
+    mysql.query("insert into user nickname=?,register_date=?,user_id=?,password=?", [this.nickname, time.minute, uuid, this.password], function (err, results, fields) {
         if (err) {
             throw err;
         } else {

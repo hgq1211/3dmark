@@ -123,25 +123,13 @@ qiniu.conf.ACCESS_KEY = config.ACCESS_KEY;
 qiniu.conf.SECRET_KEY = config.SECRET_KEY;
 var uptoken = new qiniu.rs.PutPolicy(config.Bucket_Name);
 
-routes.get('/',function (req, res) {
-    var ary = ccap.get();
-    var txt = ary[0];
-    var buf = ary[1];
-    //res.end(buf);
-    console.log("txt");
-    console.log(txt);
-    console.log(buf);
-
-})
-
-
 console.log("something happening");
 
 
 // error handlers
 
-//// development error handler
-//// will print stacktrace
+// development error handler
+// will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
