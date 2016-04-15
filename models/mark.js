@@ -6,29 +6,34 @@ var sequelize = require('./connect');
 
 
 function image(sequelize, DataTypes) {
-    return sequelize.define('image_info', {
-        image_id: {
+    return sequelize.define('mark_info', {
+        mark_id: {
             type: DataTypes.STRING(64),
             allowNull: false,
             primaryKey: true
         },
-        image_url: {
-            type: DataTypes.STRING(128),
+        point: {
+            type: DataTypes.TEXT,
             allowNull: false
         },
-        image_name: {
-            type: DataTypes.STRING(128),
-            allowNull: false,
-            comment: 'ÕÕÆ¬Ãû'//±¸×¢
+        point_id: {
+            type: DataTypes.INTEGER(8),
+            allowNull: false
         },
-        user_id: {
-
+        mark_date: {
+            type: DataTypes.STRING(32),
+            allowNull: false
+        },
+        image_id: {
             type: DataTypes.STRING(64),
             allowNull: false
         },
-        upload_date: {
-
-            type: DataTypes.STRING(32),
+        text: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        user_id: {
+            type: DataTypes.STRING(64),
             allowNull: false
         }
     }, {

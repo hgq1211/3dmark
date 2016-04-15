@@ -1,5 +1,9 @@
-//定义post表结构
-module.exports = function(sequelize, DataTypes) {
+
+var Sequelize = require('sequelize');
+var sequelize = require('./connect');
+
+sequelize.sync();
+function user(sequelize, DataTypes) {
   return sequelize.define('user_info', {
     nickname: {
       field: 'nickname',
@@ -17,16 +21,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(64),
       allowNull: false,
       unique: true,//索引
-      primaryKey:true
+      primaryKey: true
     },
     password: {
       field: 'password',
       type: DataTypes.STRING(255),
       allowNull: false
     }
-  } , {
+  }, {
     timestamps: false,
     freezeTableName: true,
     createdAt: false
   });
-};
+}
+  module.exports =user(sequelize,Sequelize);

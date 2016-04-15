@@ -1,14 +1,18 @@
+//以上是我们引入框架模块
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var path = require('path');
 var fs = require('fs');
 var join = path.join;
-//以上是我们引入框架模块
-//var t = require('../models/t_patient_info');
-//现在我们把刚才创建的user。js引入到这里
-//var User=require('../models/user');
-var Point=require('../models/markPoint');
+
+//重复使用的变量引入
+var time=require('../models/time');//引入一个定义时间格式的变量
+var uuid = require('../utils/uuid').v4();//后边我们用于生成用户ID
+
+
+//引入model层的表结构模块
+var Mark=require('../models/mark');
 var Image=require('../models/image');
 var User=require('../models/user');
 /******************************************
@@ -47,6 +51,11 @@ router.get('/jumpwait', function (req, res) {
         title: '注册成功'
     });
 });
+router.get('/error', function (req, res) {
+    res.render('error', {
+        title: '出错啦！'
+    });
+});
 router.get('/3dmark', function (req, res) {
     res.render('3dmark', {
         title: '标注界面'
@@ -59,16 +68,15 @@ router.get('/objmark', function (req, res) {
 });
 
 router.get('/p_index', function (req, res) {
-    User.get(req.session.user.nickname,function(user) {
+        User.findOne({'where': {'nickname': req.session.user.nickname}})
+            .then(function(user){
 
-        //我们在函数执行成功时将user数据对象渲染到前端
         res.render('p_index', {
             title: '用户首页',
-            user:user//这两个名字是一样的
+            user:user
         });
         })
-
-});
+    });
 //处理p_reg的post请求
 router.post('/p_reg', function (req, res) {
     //检验用户两次输入的口令是否一致
@@ -81,22 +89,31 @@ router.post('/p_reg', function (req, res) {
     var password = md5.update(req.body.password).digest('base64');
     //将注册页面传递过来的参数封装到 newUser 这个对象中
     //我们创建一个User对象，并把它付给newUser
-    var newUser = new User({
-        password:password,
-        nickname:req.body.nickname//密码我们是在上边加密时获取的，方法跟用户名一样，这时的密码已经经过了加密处理
-    });
-        User.get(newUser.nickname,function(req,res){
 
-        });
-        newUser.save(function (err) {
-            if (err) {
+    User.findOne({'where': {'nickname': req.body.nickname}})
+        .then(function(user){
+            console.log(user);
+            if(user){
+                req.flash('error',"用户已存在");
+                return res.redirect('/p_reg');
+            }
+
+        User.create({
+            nickname: req.body.nickname,
+            password:password,
+            register_date:time.minute,
+            user_id:uuid
+        }).then(function (user) {
+            console.log("err 是"+user.nickname);
+            if (!user) {
                 req.flash('error', err);
-                return res.redirect('/p_index');//注册失败返回患者注册页
+                return res.redirect('/p_reg');
             }
             req.flash('success', '注册成功');
             res.redirect('/jumpwait');//注册成功后跳转到提示注册成功的页面，5秒后跳转至登录主界面
         });
     });
+});
 
 ////实现登录功能
 router.post('/login', function (req, res) {
@@ -108,78 +125,81 @@ router.post('/login', function (req, res) {
         req.flash('error', '请输入登录账户/登录密码！');
         return res.redirect('/login');
     }
-        User.get(nickName, function (user) {
-            console.log("user   "+user.nickname);
+    User.findOne({'where': {'nickname': req.body.nickname}})
+        .then(function(user){
             if (!user) {
                 req.flash('error', ' 用户不存在！');
                 return res.redirect('/login');
             }
-            //if (user.password != password) {
-            //    req.flash('error', ' 登录密码错误');
-            //    return res.redirect('/login');
-            //}
+            if (user.password != password) {
+                req.flash('error', ' 登录密码错误');
+                return res.redirect('/login');
+            }
             req.session.user = user;//检查成功之后我们在这把用户的信息存到session中
             req.flash('success', ' 登入成功');
             res.redirect('/p_index');//重定向到p_index页面，登录成功
         });
-});
+    });
 
 router.post('/mark/point',function(req,res) {
-    var mark = new Point({
+    Mark.create({
+        mark_id:uuid,
         point:req.body.point,
         text:req.body.text,
-        point_id:req.body.point_name,
-        image_id:'1',
-        user_id:req.session.user.user_id
-    });
-    console.log(req.body.point);
-    mark.save(function (err) {
-        if (err) {
+        point_id:req.body.point_id,
+        image_id:1,
+        user_id:req.session.user.user_id,
+        mark_date:time.minute
+    }).then(function (mark) {
+        if (!mark) {
             req.flash('error', err);
             return res.redirect('/p_err');
         }
     });
-    Point.get('1', function (err, points) {
-        if (err) {
-            console.log(err);
-            return res.redirect('/p_err');
-        }
-        return res.json(points);
+        Mark.findAll({'where': {'image_id': 1}})
+            .then(function(points){
+                if (!points) {
+                    req.flash('error', ' 发生错误了！');
+                    return res.redirect('/error');
+                }
+         return res.json(points);
     })
 });
 router.post('/mark/recovery',function(req,res) {
 
-    Point.get('1', function (err, points) {
-        if (err) {
-            console.log(err);
-            return res.redirect('/p_err');
-        }
+    Mark.findAll({'where': {'image_id': 1}})
+        .then(function(points){
+            if (!points) {
+                req.flash('error', ' 发生错误了！');
+                return res.redirect('/error');
+            }
         return res.json(points);
     })
 });
 //查询当前图像最大标注id
 router.post('/max/point',function(req,res) {
 
-    Point.findmax('1', function (err, count) {
-        if (err) {
-            console.log(err);
-            return res.redirect('/p_err');
+    Mark.max('point_id',{'where':{'image_id':1}})
+        .then(function (max) {
+            console.log("max"+max);
+        if (0) {
+            console.log(max);
+            return res.redirect('/error');
         }
-        return res.json(count);
+        return res.json(max);
     })
 });
 //上传用户图像
 router.post('/image_upload',function(req,res) {
-    var img_url=req.body.image_url;
-    var image_name=req.body.image_name;
-    var imgobj=new Image({
-        img_url:img_url,
-        image_name:image_name,
+    Image.create({
+        image_id:uuid,
+        image_url:req.body.image_url,
+        image_name:req.body.image_name,
+        upload_date:time.minute,
         user_id:req.session.user.user_id
-    });
-    imgobj.save(function(err){
-        if (err) {
-            req.flash('error', err);
+    }).then(function (image) {
+        if (!image) {
+            req.flash('error', "添加出错");
             return res.redirect('/error');
         }
     })

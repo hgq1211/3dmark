@@ -30,7 +30,7 @@ function particle(intersects){
     particle.position.copy( intersects);
     particle.scale.x = particle.scale.y = 8;
     particle.name=current;
-    $("#point_name").val(current);
+    $("#point_id").val(current);
 
     //particle.append("text")
     //    .attr("class","forceText")
@@ -46,12 +46,12 @@ function particle(intersects){
 function savemark(mark){
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
-    var point_name=$("#point_name").val();
+    var point_id=$("#point_id").val();
     $.ajax({
         type: "post",
         url: "/mark/point",
         dataType:"json",
-        data: {point:point,text:text,point_name:point_name},
+        data: {point:point,text:text,point_id:point_id},
         success: function (data) {
             recovery();
         }
@@ -104,7 +104,7 @@ function onDocumentMouseDown( event ) {
 
     if ( intersects.length > 0 ) {
         console.log(intersects[0]);
-        particle(intersects[ 0 ].point );
+        particle(intersects[0].point );
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
@@ -126,7 +126,7 @@ function markcount(image_id) {
         url: "/max/point",
         data: {image_id: image_id},
         success: function (data) {
-            var id=data.max_id;
+            var id=data;
           count=id?id:0;
         }
     });
