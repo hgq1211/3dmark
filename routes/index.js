@@ -8,7 +8,7 @@ var join = path.join;
 
 //重复使用的变量引入
 var time=require('../models/time');//引入一个定义时间格式的变量
-var uuid = require('../utils/uuid').v4();//后边我们用于生成用户ID
+var uid = require('../utils/uuid');//后边我们用于生成用户ID
 
 
 //引入model层的表结构模块
@@ -23,7 +23,10 @@ var User=require('../models/user');
  * 链接数据库：无
  *
  */
-
+//Mark.belongsTo(User,{as:'user',foreignKey:'user_id'});
+//User.hasMany(Mark);
+//User.sync();
+//Mark.sync();
 router.get('/', function(req, res, next)
 {
         res.render('home', {
@@ -102,7 +105,7 @@ router.post('/p_reg', function (req, res) {
             nickname: req.body.nickname,
             password:password,
             register_date:time.minute,
-            user_id:uuid
+            user_id:uid.v4()
         }).then(function (user) {
             console.log("err 是"+user.nickname);
             if (!user) {
@@ -143,7 +146,7 @@ router.post('/login', function (req, res) {
 
 router.post('/mark/point',function(req,res) {
     Mark.create({
-        mark_id:uuid,
+        mark_id:uid.v4(),
         point:req.body.point,
         text:req.body.text,
         point_id:req.body.point_id,
@@ -169,12 +172,17 @@ router.post('/mark/recovery',function(req,res) {
 
     Mark.findAll({'where': {'image_id': 1}})
         .then(function(points){
+            //TODO 多表联立
+            User.findOne({'attributes': ['nickname']},{'where': {'user_id': points.user_id}})
+                .then(function(user){
             if (!points) {
                 req.flash('error', ' 发生错误了！');
                 return res.redirect('/error');
             }
+
         return res.json(points);
-    })
+        })
+     })
 });
 //查询当前图像最大标注id
 router.post('/max/point',function(req,res) {
@@ -192,7 +200,7 @@ router.post('/max/point',function(req,res) {
 //上传用户图像
 router.post('/image_upload',function(req,res) {
     Image.create({
-        image_id:uuid,
+        image_id:uid.v4(),
         image_url:req.body.image_url,
         image_name:req.body.image_name,
         upload_date:time.minute,

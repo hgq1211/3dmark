@@ -141,6 +141,7 @@ function editclose(){
 }
 //按照point_id 显示同一个点下多个标注内容
 function showcomment(data){
+
             $(".heading").empty();
             $.each(data, function(index, val){
                 var text=$("<h4 style='text-align: left'></h4>").text("ID "+val.point_id+":  "+val.text);

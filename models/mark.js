@@ -4,7 +4,6 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./connect');
 
-
 function image(sequelize, DataTypes) {
     return sequelize.define('mark_info', {
         mark_id: {
@@ -42,5 +41,6 @@ function image(sequelize, DataTypes) {
         createdAt: false
     });
 }
+
 sequelize.sync();
 module.exports =image(sequelize,Sequelize);
