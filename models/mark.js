@@ -4,35 +4,34 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./connect');
 
-function image(sequelize, DataTypes) {
-    return sequelize.define('mark_info', {
+var Mark= sequelize.define('mark_info', {
         mark_id: {
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false,
             primaryKey: true
         },
         point: {
-            type: DataTypes.TEXT,
+            type: Sequelize.TEXT,
             allowNull: false
         },
         point_id: {
-            type: DataTypes.INTEGER(8),
+            type: Sequelize.INTEGER(8),
             allowNull: false
         },
         mark_date: {
-            type: DataTypes.STRING(32),
+            type: Sequelize.STRING(32),
             allowNull: false
         },
         image_id: {
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false
         },
         text: {
-            type: DataTypes.TEXT,
+            type: Sequelize.TEXT,
             allowNull: false
         },
         user_id: {
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false
         }
     }, {
@@ -40,7 +39,4 @@ function image(sequelize, DataTypes) {
         freezeTableName: true,
         createdAt: false
     });
-}
-
-sequelize.sync();
-module.exports =image(sequelize,Sequelize);
+module.exports =Mark;

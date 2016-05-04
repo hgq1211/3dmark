@@ -23,8 +23,8 @@ var User=require('../models/user');
  * 链接数据库：无
  *
  */
-//Mark.belongsTo(User,{as:'user',foreignKey:'user_id'});
-//User.hasMany(Mark);
+Mark.belongsTo(User,{ foreignKey:'user_id' });
+User.hasMany(Mark);
 //User.sync();
 //Mark.sync();
 router.get('/', function(req, res, next)
@@ -100,14 +100,15 @@ router.post('/p_reg', function (req, res) {
                 req.flash('error',"用户已存在");
                 return res.redirect('/p_reg');
             }
-
-        User.create({
-            nickname: req.body.nickname,
-            password:password,
-            register_date:time.minute,
-            user_id:uid.v4()
-        }).then(function (user) {
-            console.log("err 是"+user.nickname);
+            User.sync().then(function() {
+                return User.create({
+                    nickname: req.body.nickname,
+                    password: password,
+                    register_date: time.minute,
+                    user_id: uid.v4()
+                })
+                }).then(function (user) {
+                console.log("err 是"+user.nickname);
             if (!user) {
                 req.flash('error', err);
                 return res.redirect('/p_reg');
@@ -145,7 +146,8 @@ router.post('/login', function (req, res) {
     });
 
 router.post('/mark/point',function(req,res) {
-    Mark.create({
+    Mark.sync().then(function(){
+    return Mark.create({
         mark_id:uid.v4(),
         point:req.body.point,
         text:req.body.text,
@@ -153,12 +155,14 @@ router.post('/mark/point',function(req,res) {
         image_id:1,
         user_id:req.session.user.user_id,
         mark_date:time.minute
+    })
     }).then(function (mark) {
         if (!mark) {
             req.flash('error', err);
             return res.redirect('/p_err');
         }
     });
+
         Mark.findAll({'where': {'image_id': 1}})
             .then(function(points){
                 if (!points) {
@@ -169,21 +173,15 @@ router.post('/mark/point',function(req,res) {
     })
 });
 router.post('/mark/recovery',function(req,res) {
-
-    Mark.findAll({'where': {'image_id': 1}})
+    console.log("进行测试1");
+    Mark.findAll({'where':{'image_id':1},include:[User]})
         .then(function(points){
             //TODO 多表联立
-            User.findOne({'attributes': ['nickname']},{'where': {'user_id': points.user_id}})
-                .then(function(user){
-            if (!points) {
-                req.flash('error', ' 发生错误了！');
-                return res.redirect('/error');
-            }
-
+            console.log("进行测试2");
+            console.log(JSON.stringify(points));
         return res.json(points);
         })
-     })
-});
+     });
 //查询当前图像最大标注id
 router.post('/max/point',function(req,res) {
 
@@ -199,13 +197,15 @@ router.post('/max/point',function(req,res) {
 });
 //上传用户图像
 router.post('/image_upload',function(req,res) {
-    Image.create({
-        image_id:uid.v4(),
-        image_url:req.body.image_url,
-        image_name:req.body.image_name,
-        upload_date:time.minute,
-        user_id:req.session.user.user_id
-    }).then(function (image) {
+    Mark.sync().then(function() {
+        return Image.create({
+            image_id: uid.v4(),
+            image_url: req.body.image_url,
+            image_name: req.body.image_name,
+            upload_date: time.minute,
+            user_id: req.session.user.user_id
+        })
+        }).then(function (image) {
         if (!image) {
             req.flash('error', "添加出错");
             return res.redirect('/error');

@@ -10,7 +10,6 @@ var position=[];
 var count;
 raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
-
 var PI2 = Math.PI * 2;
     particleMaterial = new THREE.SpriteCanvasMaterial( {
         color: 0x0000ff,
@@ -22,9 +21,8 @@ var PI2 = Math.PI * 2;
     });
 
 function particle(intersects){
-    markcount("1");
-    //alert(count);
-    var current=count+1;
+    markcount(1);
+    var current=count?(count+1):1;
     var particle = new THREE.Sprite( particleMaterial );
     console.log(particle);
     particle.position.copy( intersects);
@@ -145,7 +143,7 @@ function showcomment(data){
             $(".heading").empty();
             $.each(data, function(index, val){
                 var text=$("<h4 style='text-align: left'></h4>").text("ID "+val.point_id+":  "+val.text);
-                var name=$("<small class='pull-right'>"+val.nickname+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
+                var name=$("<small class='pull-right'>"+val.user_info.nickname+"&nbsp;&nbsp;&nbsp;<time class='timeago' datetime='"+val.mark_date+"'></time></small>").timeago();
                 $("blockquote").append(text).append(name).append('<hr>');
             });
    if(!data.length){

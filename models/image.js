@@ -5,30 +5,29 @@ var Sequelize = require('sequelize');
 var sequelize = require('./connect');
 
 
-function image(sequelize, DataTypes) {
-    return sequelize.define('image_info', {
+var Image= sequelize.define('image_info', {
         image_id: {
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false,
             primaryKey: true
         },
         image_url: {
-            type: DataTypes.STRING(128),
+            type: Sequelize.STRING(128),
             allowNull: false
         },
         image_name: {
-            type: DataTypes.STRING(128),
+            type: Sequelize.STRING(128),
             allowNull: false,
             comment: 'ÕÕÆ¬Ãû'//±¸×¢
         },
         user_id: {
 
-            type: DataTypes.STRING(64),
+            type: Sequelize.STRING(64),
             allowNull: false
         },
         upload_date: {
 
-            type: DataTypes.STRING(32),
+            type: Sequelize.STRING(32),
             allowNull: false
         }
     }, {
@@ -36,6 +35,4 @@ function image(sequelize, DataTypes) {
         freezeTableName: true,
         createdAt: false
     });
-}
-sequelize.sync();
-module.exports =image(sequelize,Sequelize);
+module.exports =Image;
