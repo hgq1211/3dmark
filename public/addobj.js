@@ -33,7 +33,9 @@ $(function () {
     //cube.rotation.y = Math.random() * 2 * Math.PI;
     scene.add( cube );
     objects.push( cube );
-
+    console.log("cube输出为：");
+    console.log(objects);
+    console.log("cube输出结束：");
     stats = new Stats();
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.top = '0px';
@@ -44,9 +46,9 @@ $(function () {
 });
 
 function animate() {
-    requestAnimationFrame( animate );
-    render();
-    stats.update();
+        requestAnimationFrame( animate );
+        render();
+        stats.update();
 }
 var theta = 0;
 function render() {

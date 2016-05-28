@@ -10,8 +10,9 @@ var position=[];
 var count;
 raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
+
 var PI2 = Math.PI * 2;
-    particleMaterial = new THREE.SpriteCanvasMaterial( {
+    particleMaterial = new THREE.SpriteCanvasMaterial({
         color: 0x0000ff,
         program: function ( context ) {
             context.beginPath();
@@ -23,13 +24,19 @@ var PI2 = Math.PI * 2;
 function particle(intersects){
     markcount(1);
     var current=count?(count+1):1;
+    console.log("particleMaterial");
+    console.log(particleMaterial);
     var particle = new THREE.Sprite( particleMaterial );
-    console.log(particle);
+    console.log("particalis");
+
+    //console.log("particalend");
     particle.position.copy( intersects);
     particle.scale.x = particle.scale.y = 8;
     particle.name=current;
+    //alert(particle.name);
+    console.log(particle);
+    console.log("particale:");
     $("#point_id").val(current);
-
     //particle.append("text")
     //    .attr("class","forceText")
     //    .attr("x",function(){ return position[0]; })
@@ -37,11 +44,12 @@ function particle(intersects){
     //    .attr("dy", ".4em")
     //    //.attr("dx", "-.4em")
     //    .text(function(){ return current; });
-    scene.add( particle );
+    //scene.add(particle);
 }
 
 //提交当前标注信息
 function savemark(mark){
+
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
     var point_id=$("#point_id").val();
@@ -52,6 +60,7 @@ function savemark(mark){
         data: {point:point,text:text,point_id:point_id},
         success: function (data) {
             recovery();
+            //alert("success"+data);
         }
     })
 }
@@ -74,7 +83,7 @@ function recovery() {
 function raycater() {
     var obj = document.getElementById("obj");
     obj.addEventListener('mousedown', onDocumentMouseDown, false);
-    obj.addEventListener('touchstart', onDocumentTouchStart, false);
+    //obj.addEventListener('mouseover', onDocumentMouseOver, false);
     window.addEventListener('resize', onWindowResize, false);
 }
 
@@ -85,28 +94,22 @@ function onWindowResize() {
 
 }
 
-function onDocumentTouchStart( event ) {
-    event.preventDefault();
-    event.clientX = event.touches[0].clientX;
-    event.clientY = event.touches[0].clientY;
-    onDocumentMouseDown( event );
-
-}
-
 function onDocumentMouseDown( event ) {
     event.preventDefault();
     mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
     mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
     raycaster.setFromCamera( mouse, camera );
-    var intersects = raycaster.intersectObjects( objects );
-
-    if ( intersects.length > 0 ) {
+    var intersects = raycaster.intersectObjects(objects,true);
+    console.log(intersects);
+    if (intersects.length > 0) {
         console.log(intersects[0]);
         particle(intersects[0].point );
+        //alert(intersects[0].point.x);
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
         console.log(position);
-        $("#edit").remove();
+        //$("#edit").remove();
+       alert(position[0]);
         showtextarea(intersects[0].point);
     }
 }
@@ -153,6 +156,8 @@ function showcomment(data){
 
 function showtextarea(point){
     this.point=point;
+    console.log("point");
+    console.log(point);
     var writecomment=$('<div style="padding: 0;border:0" id="edit">'+
         '<button type="button" class="close" onclick="editclose()" >×</button>'+
         '<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+

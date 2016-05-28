@@ -64,6 +64,11 @@ router.get('/3dmark', function (req, res) {
         title: '标注界面'
     });
 });
+router.get('/test', function (req, res) {
+    res.render('test', {
+        title: '标注测试'
+    });
+});
 router.get('/objmark', function (req, res) {
     res.render('objmark', {
         title: 'obj标注界面'
