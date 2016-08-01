@@ -3,9 +3,9 @@
 <%- include head.html %>
 <body>
 <h3>登录成功</h3>
-<!--<%=user.p_nickname%>这种方式来使用我们后端渲染出来的对象(变量)-->
+
+<div><h2>注册日期：<%=user.register_date%></h2></div>
 <div><h2>欢迎你：<%=user.nickname%></h2></div>
-<h4>注册日期是：<%=user.register_date%></h4>
 <button class="btn btn-lg btn-primary" onclick="window.location='3dmark'">点此进去标注界面</button>
 <button class="btn btn-lg btn-success" onclick="window.location='objmark'">obj标注界面</button>
 

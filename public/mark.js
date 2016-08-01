@@ -3,18 +3,17 @@
  */
 
 //单击添加球体标注
-var particleMaterial,container;
+var spriteMaterial,container;
 var raycaster;
 var mouse;
 var position=[];
 var count;
 raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
-
-var PI2 = Math.PI * 2;
-    particleMaterial = new THREE.SpriteCanvasMaterial({
+var PI2 = Math.PI * 3;
+    spriteMaterial = new THREE.SpriteMaterial({
         color: 0x0000ff,
-        program: function ( context ) {
+        map: function ( context ) {
             context.beginPath();
             context.arc( 0, 0, 0.5, 0, PI2, true );
             context.fill();
@@ -24,43 +23,42 @@ var PI2 = Math.PI * 2;
 function particle(intersects){
     markcount(1);
     var current=count?(count+1):1;
-    console.log("particleMaterial");
-    console.log(particleMaterial);
-    var particle = new THREE.Sprite( particleMaterial );
-    console.log("particalis");
-
-    //console.log("particalend");
-    particle.position.copy( intersects);
-    particle.scale.x = particle.scale.y = 8;
-    particle.name=current;
-    //alert(particle.name);
-    console.log(particle);
-    console.log("particale:");
+    spriteMaterial.map.offset = new THREE.Vector2(0.2, 0);
+    spriteMaterial.map.repeat = new THREE.Vector2(1 / 5, 1);
+    spriteMaterial.depthTest = false;
+    spriteMaterial.blending = THREE.AdditiveBlending;
+    var sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(2, 2, 1);
+    sprite.position.copy(intersects);
+    sprite.velocityX = 5;
+    console.log("sprite");
+    console.log(sprite);
+    scene.add(sprite);
     $("#point_id").val(current);
-    //particle.append("text")
-    //    .attr("class","forceText")
-    //    .attr("x",function(){ return position[0]; })
-    //    .attr("y",function(){ return position[1]; })
-    //    .attr("dy", ".4em")
-    //    //.attr("dx", "-.4em")
-    //    .text(function(){ return current; });
-    //scene.add(particle);
 }
 
 //提交当前标注信息
 function savemark(mark){
-
     var point=JSON.stringify(mark);
     var text=$("#marktext").val();
     var point_id=$("#point_id").val();
+    console.log("text"+text+"point_id"+point_id+"point"+point);
     $.ajax({
         type: "post",
         url: "/mark/point",
         dataType:"json",
+        beforeSend:function(){
+            if(!text){
+        $("#marktext").focus();
+                return false;
+            }
+        },
         data: {point:point,text:text,point_id:point_id},
         success: function (data) {
+            $("#marktext").val("")
+                          .focus();
             recovery();
-            //alert("success"+data);
+            //alert("success");
         }
     })
 }
@@ -83,7 +81,7 @@ function recovery() {
 function raycater() {
     var obj = document.getElementById("obj");
     obj.addEventListener('mousedown', onDocumentMouseDown, false);
-    //obj.addEventListener('mouseover', onDocumentMouseOver, false);
+    window.addEventListener('mouseover', onDocumentMouseOver, false);
     window.addEventListener('resize', onWindowResize, false);
 }
 
@@ -96,32 +94,34 @@ function onWindowResize() {
 
 function onDocumentMouseDown( event ) {
     event.preventDefault();
+    if (this instanceof THREE.Sprite){
+        alert("over");
+    }
     mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
     mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
     raycaster.setFromCamera( mouse, camera );
     var intersects = raycaster.intersectObjects(objects,true);
-    console.log(intersects);
+    console.log("intersects"+intersects);
     if (intersects.length > 0) {
-        console.log(intersects[0]);
         particle(intersects[0].point );
         //alert(intersects[0].point.x);
         position[0]=intersects[0].point.x;
         position[1]=intersects[0].point.y;
-        console.log(position);
         //$("#edit").remove();
-       alert(position[0]);
+        //alert("x的坐标为"+position[0]);
         showtextarea(intersects[0].point);
     }
 }
 
 function onDocumentMouseOver(event){
-    //event.preventDefault();
+    event.preventDefault();
+    if (event instanceof THREE.Sprite){
     alert("over");
+    }
 }
 
 //查询当前图片提交过的标注点有多少（mark_id）
 function markcount(image_id) {
-
     $.ajax({
         type: "post",
         url: "/max/point",
@@ -150,29 +150,20 @@ function showcomment(data){
                 $("blockquote").append(text).append(name).append('<hr>');
             });
    if(!data.length){
-                 $("blockquote").append("<h4>暂无标注，您可以单击图像任一点开始标注！！</h4>");
+                 $("blockquote").append("<h4>未查询到任何标注信息，您可以单击图像任一点开始标注！！</h4>");
             }
         }
 
 function showtextarea(point){
     this.point=point;
-    console.log("point");
-    console.log(point);
+    //console.log(point);
     var writecomment=$('<div style="padding: 0;border:0" id="edit">'+
         '<button type="button" class="close" onclick="editclose()" >×</button>'+
         '<textarea class="form-control" id="marktext" rows="3" placeholder="添加标注。。。"></textarea>'+
-        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button" id="submit" onclick="savemark(point);editclose()">提交</button>'+
+        '<div class="span12">'+'<button class="btn btn-block btn-primary" type="button" id="submit" onclick="savemark(point)">提交</button>'+
         '</div>'+'</div>');
 
     $('#markpoint').append(writecomment);
 
     //$("#eddit").css({"right": 10+"px", "bottom": 152+ "px"}).show();
-}
-function empty(){
-    if(!$("#marktext").val()){
-
-        $("#submit").attr({
-            "disabled":"disabled"
-        });
-    }
 }

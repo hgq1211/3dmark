@@ -34,12 +34,8 @@ app.use(flash());
 app.use(session({
     secret: "hello world",//这个是session加密需要的，随便写的。
     resave:false,
-    saveUninitialized:false,
-    cookie: {
-        maxAge: 60000 * 20	//20 minutes
-    }
+    saveUninitialized:false
 }));
-
 
 app.use('/', routes);
 // catch 404 and forward to error handler

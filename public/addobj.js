@@ -36,10 +36,7 @@ $(function () {
     console.log("cube输出为：");
     console.log(objects);
     console.log("cube输出结束：");
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    container.appendChild( stats.domElement );
+
     animate();
     recovery();
     raycater();
@@ -48,7 +45,6 @@ $(function () {
 function animate() {
         requestAnimationFrame( animate );
         render();
-        stats.update();
 }
 var theta = 0;
 function render() {

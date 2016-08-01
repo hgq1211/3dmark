@@ -49,6 +49,16 @@ router.get('/p_reg', function (req, res) {
         title: '注册页面'
     });
 });
+router.get('/table', function (req, res) {
+    res.render('table', {
+        title: '注册页面'
+    });
+});
+router.get('/table_boot', function (req, res) {
+    res.render('table_boot', {
+        title: '注册页面'
+    });
+});
 router.get('/jumpwait', function (req, res) {
     res.render('jumpwait', {
         title: '注册成功'
@@ -76,15 +86,14 @@ router.get('/objmark', function (req, res) {
 });
 
 router.get('/p_index', function (req, res) {
-        User.findOne({'where': {'nickname': req.session.user.nickname}})
-            .then(function(user){
-
-        res.render('p_index', {
-            title: '用户首页',
-            user:user
-        });
+    User.findOne({'where': {'nickname': req.session.user.nickname}})
+        .then(function(user){
+            res.render('p_index', {
+                title: '用户首页',
+                user:user
+            });
         })
-    });
+});
 //处理p_reg的post请求
 router.post('/p_reg', function (req, res) {
     //检验用户两次输入的口令是否一致
@@ -145,6 +154,7 @@ router.post('/login', function (req, res) {
                 return res.redirect('/login');
             }
             req.session.user = user;//检查成功之后我们在这把用户的信息存到session中
+            console.log(req.session.user);
             req.flash('success', ' 登入成功');
             res.redirect('/p_index');//重定向到p_index页面，登录成功
         });

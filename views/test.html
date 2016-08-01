@@ -1,172 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
-    <title>three.js webgl - loaders - OBJ loader</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        body {
-            font-family: Monospace;
-            background-color: #000;
-            color: #fff;
-            margin: 0px;
-            overflow: hidden;
-        }
-        #info {
-            color: #fff;
-            position: absolute;
-            top: 10px;
-            width: 100%;
-            text-align: center;
-            z-index: 100;
-            display:block;
-        }
-        #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
-    </style>
+    <title>Example 08.06 - Load OBJ model </title>
     <link href="global/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="three.js"></script>
+    <script type="text/javascript" src="global/javascripts/OBJLoader.js"></script>
+    <!--<script type="text/javascript" src="../libs/stats.js"></script>-->
+    <!--<script type="text/javascript" src="../libs/dat.gui.js"></script>-->
+
     <script src="CanvasRenderer.js"></script>
     <script src="Projector.js"></script>
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+        #markpoint{
+            position:absolute;
+            z-index: 9999;
+            top:10% ;
+            right:1%;
+        }
+        #eddit{
+            position:absolute;
+            z-index: 9999;
+        }
+        .forceText {
+            fill: black ;
+            text-anchor: middle;
+            font-size: 20px;
+            font-family: arial;
+        }
+    </style>
 </head>
-
 <body>
-<script type="text/javascript" src="mark.js"></script>
-<script type="text/javascript" src="global/javascripts/OBJLoader.js"></script>
+<script type="text/javascript" src="dat.gui.js"></script>
 <script type="text/javascript" src="global/javascripts/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="mark.js"></script>
 <script type="text/javascript" src="global/javascripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="global/javascripts/d3.min.js"></script>
 <script type="text/javascript" src="global/javascripts/timeago.js"></script>
 <script type="text/javascript" src="global/javascripts/timeago.zh-cn.js"></script>
-<div id="info" class="text-right">标注信息
+<div id="Stats-output">
+
+</div>
+<div id="obj"></div>
 <div class="col-md-3 alert-success" id="markpoint" >
     <!--<button type="button" class="close" onclick="markclose()">×</button>-->
     <blockquote class="heading pre-scrollable" style="padding: 0;margin:0;border:0"></blockquote>
 </div>
-    <input id="point_id" value="" style="display: none">
-</div>
-
-<script>
-    var container,loader;
-    var camera, scene, renderer,objects=[];
-//    var mouseX = 0, mouseY = 0;
-//    var windowHalfX = window.innerWidth / 2;
-//    var windowHalfY = window.innerHeight / 2;
-//    init();
-
-    $(function () {
-        container = document.createElement( 'div' );
-        container.id="obj";
-        document.body.appendChild( container );
-        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-        camera.position.z = 250;
-
-        // scene
-        scene = new THREE.Scene();
-        var ambient = new THREE.AmbientLight( 0x101030 );
-        scene.add( ambient );
-        var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-        directionalLight.position.set( 0, 0, 1 );
-        scene.add( directionalLight );
-        // texture
-        var manager = new THREE.LoadingManager();
-        manager.onProgress = function ( item, loaded, total ) {
-
-            console.log( item, loaded, total );
-
-        };
-
-        var texture = new THREE.Texture();
-
-        loader = new THREE.ImageLoader( manager );
-        loader.load( 'textures/UV_Grid_Sm.jpg', function ( image ) {
-            texture.image = image;
-            texture.needsUpdate = true;
-        } );
-
-        // model
-
-        loader = new THREE.OBJLoader( manager );
-        loader.load( 'male02/male02.obj', function ( object ) {
-
-            object.traverse( function ( child ) {
-
-                if ( child instanceof THREE.Mesh ) {
-
-                    child.material.map = texture;
-
-                }
-
-            } );
-
-            object.position.y = - 95;
-            scene.add( object );
-            objects.push(object);
-
-        });
-        //
+<input id="point_id" value="" style="display: none">
+<!-- Javascript code that runs our Three.js examples -->
+<script type="text/javascript">
+    var renderer,camera,scene;
+    var objects = [];
+    init();
+    function init() {
+       scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         renderer = new THREE.WebGLRenderer();
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
+        renderer.setClearColor(new THREE.Color(0xaaaaff, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled= true;
+//        renderer.autoClear=false;
+//        renderer.clear();
+        camera.position.x = 100;
+        camera.position.y =100;
+        camera.position.z = 0;
+//        camera.lookAt(scene.position);
+        scene.add(camera);
+        var spotLight = new THREE.DirectionalLight(0xffffff);
+        spotLight.position.set(30, 40, 50);
+        spotLight.intensity = 1;
+        scene.add(spotLight);
+        document.getElementById("obj").appendChild(renderer.domElement);
+        var mesh;
+        var loader = new THREE.OBJLoader();
+        loader.load('models/pinecone.obj', function (loadedMesh) {
+            var material = new THREE.MeshLambertMaterial({color: 0x5C3A21});
 
-//        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            loadedMesh.children.forEach(function (child) {
+                child.material = material;
+                child.geometry.computeFaceNormals();
+                child.geometry.computeVertexNormals();
+            });
+            mesh = loadedMesh;
+            loadedMesh.scale.set(150, 150, 150);
+            loadedMesh.rotation.x = -0.3;
+            scene.add(loadedMesh);
+            objects.push(loadedMesh);
+        });
 
-        //
-//        window.addEventListener( 'resize', onWindowResize, false );
+        animate();
         raycater();
         recovery();
-        animate();
-
-
-    });
-
-//    function onDocumentMouseDown( event ) {
-//        event.preventDefault();
-//        mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
-//        mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
-//        raycaster.setFromCamera( mouse, camera );
-//        var intersects = raycaster.intersectObjects(objects,true);
-////        alert(intersects);
-//        console.log("intersects");
-//        console.log(intersects);
-//        if (intersects.length > 0) {
-//            console.log(intersects[0]);
-//            position[0]=intersects[0].point.x;
-//            position[1]=intersects[0].point.y;
-//            console.log(position);
-////            alert("1");
-////            alert(position[1]);
-//        }
-//    }
-//
-//    function onWindowResize() {
-//
-//        windowHalfX = window.innerWidth / 2;
-//        windowHalfY = window.innerHeight / 2;
-//        camera.aspect = window.innerWidth / window.innerHeight;
-//        camera.updateProjectionMatrix();
-//        renderer.setSize( window.innerWidth, window.innerHeight );
-//
-//    }
-
-    function onDocumentMouseMove( event ) {
-        mouseX = ( event.clientX - windowHalfX ) / 2;
-        mouseY = ( event.clientY - windowHalfY ) / 2;
-
-    }
-
-    function animate() {
-        requestAnimationFrame( animate );
-        render();
-    }
-
-    function render() {
-
-        camera.lookAt( scene.position );
-        renderer.render( scene, camera );
-    }
-
+        function animate() {
+            requestAnimationFrame( animate );
+            render();
+        }
+        var step = 0;
+        function render() {
+            camera.position.y = Math.sin(step += 0.01) * 30;
+            camera.lookAt( scene.position );
+            renderer.render( scene, camera );
+        }
+      }
 </script>
-
 </body>
 </html>
